@@ -13,7 +13,7 @@
 - [x] Crear carpeta scripts
 - [x] Crear carpeta package.json
 - [x] Crear el fichero .gitignored
-- [] He realizado conexión con GitHub de este proyecto
+- [x] He realizado conexión con GitHub de este proyecto
 
 
 ## Scripys de validación
