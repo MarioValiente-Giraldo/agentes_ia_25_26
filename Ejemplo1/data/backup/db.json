@@ -1,0 +1,91 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "titulo": "Clean Code",
+      "authorId": 1,
+      "anio": 2008,
+      "editorial": "Prentice Hall",
+      "categoria": "Desarrollo de software",
+      "isbn": "9780132350884",
+      "precio": 35.99,
+      "stock": 12
+    },
+    {
+      "id": 2,
+      "titulo": "You Don't Know JS Yet",
+      "authorId": 2,
+      "anio": 2020,
+      "editorial": "Independently published",
+      "categoria": "JavaScript",
+      "isbn": "9781091210099",
+      "precio": 28.50,
+      "stock": 8
+    },
+    {
+      "id": 3,
+      "titulo": "Design Patterns: Elements of Reusable Object-Oriented Software",
+      "authorId": 3,
+      "anio": 1994,
+      "editorial": "Addison-Wesley",
+      "categoria": "Arquitectura de software",
+      "isbn": "9780201633610",
+      "precio": 42.75,
+      "stock": 5
+    },
+    {
+      "id": 4,
+      "titulo": "The Pragmatic Programmer",
+      "authorId": 4,
+      "anio": 1999,
+      "editorial": "Addison-Wesley",
+      "categoria": "Buenas prácticas",
+      "isbn": "9780201616224",
+      "precio": 39.99,
+      "stock": 7
+    },
+    {
+      "id": 5,
+      "titulo": "Introduction to Algorithms",
+      "authorId": 5,
+      "anio": 2009,
+      "editorial": "MIT Press",
+      "categoria": "Algoritmos",
+      "isbn": "9780262033848",
+      "precio": 49.90,
+      "stock": 10
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "nombre": "Robert C. Martin",
+      "nacionalidad": "Estadounidense",
+      "nacimiento": 1952
+    },
+    {
+      "id": 2,
+      "nombre": "Kyle Simpson",
+      "nacionalidad": "Estadounidense",
+      "nacimiento": 1975
+    },
+    {
+      "id": 3,
+      "nombre": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+      "nacionalidad": "Varios",
+      "nacimiento": null
+    },
+    {
+      "id": 4,
+      "nombre": "Andrew Hunt, David Thomas",
+      "nacionalidad": "Estadounidenses",
+      "nacimiento": null
+    },
+    {
+      "id": 5,
+      "nombre": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+      "nacionalidad": "Estadounidenses",
+      "nacimiento": null
+    }
+  ]
+}

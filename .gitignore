@@ -1,0 +1,17 @@
+#Gitignore sirve para indicar a git, que ficheros debe hacer seguimiento o no
+# y por tanto no subir a GitHub
+
+# variabless
+.env
+
+#archivos de sistema
+.DS_Store
+Thumbs.db
+
+
+# dependencias
+node_modules/
+
+# carpetas build
+dist/
+build/
