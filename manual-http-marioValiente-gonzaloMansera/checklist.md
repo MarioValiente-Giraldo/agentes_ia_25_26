@@ -3,7 +3,7 @@
 ## 🏗 Parte 1: Configuración inicial
 
 - [X] Crear carpeta del proyecto: `manual-http-[nombre-iniciales-apellidos]` (Mario Valiente)
-- [ ] Inicializar proyecto Node.js con `npm init` (Mario Valiente)
+- [X] Inicializar proyecto Node.js con `npm init` (Mario Valiente)
 - [ ] Completar datos en `package.json` (nombre, versión, descripción, autor) (Mario Valiente)
 - [ ] Instalar dependencias: `json-server` y `dotenv` (Gonzalo Mansera)
 - [ ] Configurar `"type": "module"` en `package.json` (Mario Valiente)
