@@ -24,10 +24,10 @@
 ## 💻 Parte 2: Script CRUD (`crud-curl.js`)
 
 - [X] Importar y configurar `dotenv` (Mario Valiente)
-- [ ] Construir `BASE_URL` desde variables de entorno (Mario Valiente)
+- [X] Construir `BASE_URL` desde variables de entorno (Mario Valiente)
 - [ ] Implementar funciones:
-  - [ ] `createStudent(studentData)` (Mario Valiente)
-  - [ ] `readAllStudents()` (Mario Valiente)
+  - [X] `createStudent(studentData)` (Mario Valiente)
+  - [ ]`readAllStudents()` (Mario Valiente)
   - [ ] `readStudentById(id)` (Mario Valiente)
   - [ ] `updateStudent(id, studentData)` (Mario Valiente)
   - [ ] `patchStudent(id, partialData)` (Mario Valiente)
