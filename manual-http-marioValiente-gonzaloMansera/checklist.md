@@ -16,14 +16,14 @@
   - [x] `src/db/` (Gonzalo Mansera)
   - [x] `scripts/` (Gonzalo Mansera)
   - [x] `images/` (Gonzalo Mansera)
-- [ ] Crear `.env` con variables: `PORT`, `API_BASE_URL`, `NODE_ENV` (Mario Valiente)
-- [ ] Crear `.env.example` (Mario Valiente)
-- [ ] Crear `.gitignore` con exclusiones necesarias (Mario Valiente)
+- [X] Crear `.env` con variables: `PORT`, `API_BASE_URL`, `NODE_ENV` (Mario Valiente)
+- [X] Crear `.env.example` (Mario Valiente)
+- [X] Crear `.gitignore` con exclusiones necesarias (Mario Valiente)
 - [ ] Crear `src/db/db.json` con estructura inicial (`students`, `courses`, `enrollments`) (Gonzalo Mansera)
 
 ## 💻 Parte 2: Script CRUD (`crud-curl.js`)
 
-- [ ] Importar y configurar `dotenv` (Mario Valiente)
+- [X] Importar y configurar `dotenv` (Mario Valiente)
 - [ ] Construir `BASE_URL` desde variables de entorno (Mario Valiente)
 - [ ] Implementar funciones:
   - [ ] `createStudent(studentData)` (Mario Valiente)

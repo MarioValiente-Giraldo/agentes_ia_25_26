@@ -1,0 +1,16 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+
+# Logs
+*.log
+logs/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Carpetas de editores 
+thunder-tests/

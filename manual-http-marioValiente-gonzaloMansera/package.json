@@ -2,13 +2,14 @@
   "name": "manual-http-mariovaliente-gonzalomansera",
   "version": "1.0.0",
   "main": "index.js",
-    "type":"module",
-
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-    
   },
   "author": "Mario Valiente Giraldo and Gonzalo Mansera Ruiz",
   "license": "ISC",
-  "description": "En este proyecto veremos la implementación de un sistema completo de gestión de estudiantes mediante peticiones HTTP utilizando una API local con json-server"
+  "description": "En este proyecto veremos la implementación de un sistema completo de gestión de estudiantes mediante peticiones HTTP utilizando una API local con json-server",
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
 }
