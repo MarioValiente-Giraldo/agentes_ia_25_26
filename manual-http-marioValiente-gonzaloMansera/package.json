@@ -4,7 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:up": "json-server --watch src/db/db.json --port 4000",
+    "crud:curl": "node src/crud-curl.js",
+    "validate": "bash scripts/validate.sh"
   },
   "author": "Mario Valiente Giraldo and Gonzalo Mansera Ruiz",
   "license": "ISC",

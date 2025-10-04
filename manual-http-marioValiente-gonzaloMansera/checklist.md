@@ -7,11 +7,11 @@
 - [x] Completar datos en `package.json` (nombre, versión, descripción, autor) (Mario Valiente)
 - [x] Instalar dependencias: `json-server` y `dotenv` (Gonzalo Mansera)
 - [x] Configurar `"type": "module"` en `package.json` (Gonzalo Mansera)
-- [ ] Añadir scripts en `package.json`:
-  - [ ] `"server:up"` (Gonzalo Mansera)
-  - [ ] `"crud:curl"` (Gonzalo Mansera)
-  - [ ] `"validate"` (Gonzalo Mansera)
-- [ ] Crear estructura de carpetas:
+- [x] Añadir scripts en `package.json`:
+  - [x] `"server:up"` (Gonzalo Mansera)
+  - [x] `"crud:curl"` (Gonzalo Mansera)
+  - [x] `"validate"` (Gonzalo Mansera)
+- [x] Crear estructura de carpetas:
   - [x] `src/` (Gonzalo Mansera)
   - [x] `src/db/` (Gonzalo Mansera)
   - [x] `scripts/` (Gonzalo Mansera)
@@ -19,7 +19,7 @@
 - [X] Crear `.env` con variables: `PORT`, `API_BASE_URL`, `NODE_ENV` (Mario Valiente)
 - [X] Crear `.env.example` (Mario Valiente)
 - [X] Crear `.gitignore` con exclusiones necesarias (Mario Valiente)
-- [ ] Crear `src/db/db.json` con estructura inicial (`students`, `courses`, `enrollments`) (Gonzalo Mansera)
+- [x] Crear `src/db/db.json` con estructura inicial (`students`, `courses`, `enrollments`) (Gonzalo Mansera)
 
 ## 💻 Parte 2: Script CRUD (`crud-curl.js`)
 
