@@ -25,14 +25,14 @@
 
 - [X] Importar y configurar `dotenv` (Mario Valiente)
 - [X] Construir `BASE_URL` desde variables de entorno (Mario Valiente)
-- [ ] Implementar funciones:
+- [X] Implementar funciones:
   - [X] `createStudent(studentData)` (Mario Valiente)
   - [X]`readAllStudents()` (Mario Valiente)
   - [X] `readStudentById(id)` (Mario Valiente)
   - [X] `updateStudent(id, studentData)` (Mario Valiente)
   - [X] `patchStudent(id, partialData)` (Mario Valiente)
   - [X] `deleteStudent(id)` (Mario Valiente)
-- [ ] Ejecutar todas las funciones en orden con mensajes claros (Mario Valiente)
+- [X] Ejecutar todas las funciones en orden con mensajes claros (Mario Valiente)
 
 ## 📚 Parte 3: Documentación CRUD con cURL
 
