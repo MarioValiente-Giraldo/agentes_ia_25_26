@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "En este proyecto veremos la implementación de un sistema completo de gestión de estudiantes mediante peticiones HTTP utilizando una API local con json-server",
   "dependencies": {
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.3",
+    "json-server": "^1.0.0-beta.3"
   }
 }

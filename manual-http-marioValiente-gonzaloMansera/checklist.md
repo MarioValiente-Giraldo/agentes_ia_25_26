@@ -27,11 +27,11 @@
 - [X] Construir `BASE_URL` desde variables de entorno (Mario Valiente)
 - [ ] Implementar funciones:
   - [X] `createStudent(studentData)` (Mario Valiente)
-  - [ ]`readAllStudents()` (Mario Valiente)
-  - [ ] `readStudentById(id)` (Mario Valiente)
-  - [ ] `updateStudent(id, studentData)` (Mario Valiente)
-  - [ ] `patchStudent(id, partialData)` (Mario Valiente)
-  - [ ] `deleteStudent(id)` (Mario Valiente)
+  - [X]`readAllStudents()` (Mario Valiente)
+  - [X] `readStudentById(id)` (Mario Valiente)
+  - [X] `updateStudent(id, studentData)` (Mario Valiente)
+  - [X] `patchStudent(id, partialData)` (Mario Valiente)
+  - [X] `deleteStudent(id)` (Mario Valiente)
 - [ ] Ejecutar todas las funciones en orden con mensajes claros (Mario Valiente)
 
 ## 📚 Parte 3: Documentación CRUD con cURL
