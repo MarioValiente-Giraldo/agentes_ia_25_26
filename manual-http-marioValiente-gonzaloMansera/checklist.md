@@ -36,7 +36,7 @@
 
 ## 📚 Parte 3: Documentación CRUD con cURL
 
-- [ ] Documentar operaciones CRUD:
+- [x] Documentar operaciones CRUD:
   - [ ] CREATE (Gonzalo Mansera)
   - [ ] READ ALL (Gonzalo Mansera)
   - [ ] READ BY ID (Gonzalo Mansera)

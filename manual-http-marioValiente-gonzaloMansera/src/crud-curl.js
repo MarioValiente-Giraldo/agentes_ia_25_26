@@ -4,33 +4,61 @@ dotenv.config();
 
 const BASE_URL = `${process.env.API_BASE_URL}:${process.env.PORT}/students`;
 /**
- *  Crea un estudiante
+ *  Crea un estudiante y envia los datos al servidor 
  * @param {Object} studentData - Parametro que contiene los datos del estudiante a crear 
  */
+
 function createStudent(studentData){
     const curl = `curl -X POST ${BASE_URL} -H "Content-Type: application/json" -d '${JSON.stringify(studentData)}'`;
     console.log(curl)
 }
+/**
+ * Muestra todos los datos(estudiantes) de la base de datos 
+ */
 
 function readAllStudents(){
     const curl = `curl -X GET ${BASE_URL}`;
     console.log(curl);
 }
 
+/**
+ * 
+ * @param {number} id  //Coge el id del estudiante y te muestra su informacion 
+ */
+
 function readStudentById(id){
     const curl = `curl -X GET ${BASE_URL}/${id}`;
     console.log(curl);
 }
+
+
+/**
+ * Actualiza los datos del estudiante usando su id 
+ * @param {number} id //El id del estudiante que queremos actualizar 
+ * @param {Object} studentData //El objeto con los nuevos datos del estudiante  
+ */
 
 function updateStudent(id, studentData){
     const curl = `curl -X PUT ${BASE_URL}/${id} -H "Content-Type: application/json" -d '${JSON.stringify(studentData)}'`;
     console.log(curl)
 }
 
+/**
+ * Actualiza unicamente los 
+ * @param {number} id -- El id del estudiante que queremos actualizar 
+ * @param {Object} partialData --Los datos que queremos cambiar 
+ */
+
 function patchStudent(id, partialData){
     const curl = `curl -X PATCH ${BASE_URL}/${id} -H "Content-Type: application/json" -d '${JSON.stringify(partialData)}'`;
     console.log(curl);
 }
+
+
+/**
+ * 
+ * @param {number} id //Elimina al estudiante de la BD con su ID  
+ */
 
 function deleteStudent(id){
     const curl = `curl -X DELETE ${BASE_URL}/${id}`;
@@ -38,6 +66,9 @@ function deleteStudent(id){
 
 }
 
+/**
+ * Es una función la cual comprueba que las funciones CRUD han funcionado correctamente
+ */
 
 function testCrud() {
   const newStudent = {
