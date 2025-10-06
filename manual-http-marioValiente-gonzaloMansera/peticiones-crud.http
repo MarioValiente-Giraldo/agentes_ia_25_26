@@ -1,0 +1,3 @@
+@BASEURL = http://localhost
+@PORT = 4000
+@APIURL = {{BASEURL}}:{{PORT}}/students

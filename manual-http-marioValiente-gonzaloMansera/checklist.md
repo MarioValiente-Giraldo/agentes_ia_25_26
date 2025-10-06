@@ -37,17 +37,17 @@
 ## 📚 Parte 3: Documentación CRUD con cURL
 
 - [x] Documentar operaciones CRUD:
-  - [ ] CREATE (Gonzalo Mansera)
-  - [ ] READ ALL (Gonzalo Mansera)
-  - [ ] READ BY ID (Gonzalo Mansera)
-  - [ ] UPDATE (Gonzalo Mansera)
-  - [ ] PATCH (Gonzalo Mansera)
-  - [ ] DELETE (Gonzalo Mansera)
-- [ ] Incluir comando cURL completo (Gonzalo Mansera)
-- [ ] Explicar cada parte del comando (flags, método HTTP, headers) (Gonzalo Mansera)
+  - [x] CREATE (Gonzalo Mansera)
+  - [x] READ ALL (Gonzalo Mansera)
+  - [x] READ BY ID (Gonzalo Mansera)
+  - [x] UPDATE (Gonzalo Mansera)
+  - [x] PATCH (Gonzalo Mansera)
+  - [x] DELETE (Gonzalo Mansera)
+- [x] Incluir comando cURL completo (Gonzalo Mansera)
+- [x] Explicar cada parte del comando (flags, método HTTP, headers) (Gonzalo Mansera)
 - [ ] Incluir respuesta HTTP real (headers + body) (Gonzalo Mansera)
 - [ ] Explicar código de estado HTTP (Gonzalo Mansera)
-- [ ] Guardar documentación en `README.md` (Gonzalo Mansera)
+- [x] Guardar documentación en `README.md` (Gonzalo Mansera)
 
 ## ⚡ Parte 4: Thunder Client
 
@@ -66,8 +66,8 @@
 
 ## 📝 Parte 5: REST Client
 
-- [ ] Crear archivo `peticiones-crud.http` (Gonzalo Mansera)
-- [ ] Definir variables (@baseUrl, @port, @apiUrl) (Gonzalo Mansera)
+- [x] Crear archivo `peticiones-crud.http` (Gonzalo Mansera)
+- [X] Definir variables (@baseUrl, @port, @apiUrl) (Gonzalo Mansera)
 - [ ] Implementar peticiones:
   - [ ] CREATE Student (Gonzalo Mansera)
   - [ ] READ All Students (Gonzalo Mansera)
