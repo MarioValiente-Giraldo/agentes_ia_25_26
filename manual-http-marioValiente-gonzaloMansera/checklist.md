@@ -81,24 +81,24 @@
 
 ## ✅ Parte 6: Script de validación
 
-- [ ] Crear `scripts/validate.sh` (Mario Valiente)
-- [ ] Validar existencia de:
-  - [ ] `package.json` (Mario Valiente)
-  - [ ] `src/db/db.json` (Mario Valiente)
-  - [ ] `.gitignore` (Mario Valiente)
-  - [ ] `.env.example` (Mario Valiente)
-  - [ ] `README.md` (Mario Valiente)
-  - [ ] `checklist.md` (Mario Valiente)
-  - [ ] `peticiones-crud.http` (Mario Valiente)
-- [ ] Validar carpetas: `src/`, `scripts/`, `images/` (Mario Valiente)
-- [ ] Validar archivo `src/crud-curl.js` (Mario Valiente)
-- [ ] Validar configuración de `package.json`:
-  - [ ] `"type": "module"` (Mario Valiente)
-  - [ ] Dependencias (Mario Valiente)
-  - [ ] Scripts (Mario Valiente)
-- [ ] Verificar al menos 6 capturas en `images/` (Mario Valiente)
-- [ ] Mostrar mensaje de validación completa (Mario Valiente)
-- [ ] Dar permisos de ejecución y probar en terminal (Mario Valiente)
+- [X] Crear `scripts/validate.sh` (Mario Valiente)
+- [X] Validar existencia de:
+  - [X] `package.json` (Mario Valiente)
+  - [X] `src/db/db.json` (Mario Valiente)
+  - [X] `.gitignore` (Mario Valiente)
+  - [X] `.env.example` (Mario Valiente)
+  - [X] `README.md` (Mario Valiente)
+  - [X] `checklist.md` (Mario Valiente)
+  - [X] `peticiones-crud.http` (Mario Valiente)
+- [X] Validar carpetas: `src/`, `scripts/`, `images/` (Mario Valiente)
+- [X] Validar archivo `src/crud-curl.js` (Mario Valiente)
+- [X] Validar configuración de `package.json`:
+  - [X] `"type": "module"` (Mario Valiente)
+  - [X] Dependencias (Mario Valiente)
+  - [X] Scripts (Mario Valiente)
+- [X] Verificar al menos 6 capturas en `images/` (Mario Valiente)
+- [X] Mostrar mensaje de validación completa (Mario Valiente)
+- [X] Dar permisos de ejecución y probar en terminal (Mario Valiente)
 
 ## 🌿 Parte 7: Git y GitHub
 
