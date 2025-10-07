@@ -237,3 +237,6 @@ Host: localhost:4000
 Accept: application/json
 
 ## Respuesta HTTP
+
+
+

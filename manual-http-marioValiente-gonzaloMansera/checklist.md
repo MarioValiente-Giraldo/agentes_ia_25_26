@@ -68,16 +68,16 @@
 
 - [x] Crear archivo `peticiones-crud.http` (Gonzalo Mansera)
 - [X] Definir variables (@baseUrl, @port, @apiUrl) (Gonzalo Mansera)
-- [ ] Implementar peticiones:
-  - [ ] CREATE Student (Gonzalo Mansera)
-  - [ ] READ All Students (Gonzalo Mansera)
-  - [ ] READ Student by ID (Gonzalo Mansera)
-  - [ ] READ estudiantes activos (Gonzalo Mansera)
-  - [ ] READ filtrar por nivel (Gonzalo Mansera)
-  - [ ] UPDATE Student (PUT) (Gonzalo Mansera)
-  - [ ] PATCH Student (Gonzalo Mansera)
-  - [ ] DELETE Student (Gonzalo Mansera)
-- [ ] Probar todas las peticiones desde VS Code (Gonzalo Mansera)
+- [X] Implementar peticiones:
+  - [X] CREATE Student (Gonzalo Mansera)
+  - [X] READ All Students (Gonzalo Mansera)
+  - [X] READ Student by ID (Gonzalo Mansera)
+  - [X] READ estudiantes activos (Gonzalo Mansera)
+  - [X] READ filtrar por nivel (Gonzalo Mansera)
+  - [X] UPDATE Student (PUT) (Gonzalo Mansera)
+  - [X] PATCH Student (Gonzalo Mansera)
+  - [X] DELETE Student (Gonzalo Mansera)
+- [X] Probar todas las peticiones desde VS Code (Gonzalo Mansera)
 
 ## ✅ Parte 6: Script de validación
 
@@ -102,16 +102,16 @@
 
 ## 🌿 Parte 7: Git y GitHub
 
-- [ ] Crear repositorio en GitHub con nombre correcto (Mario Valiente)
-- [ ] Añadir al profesor como colaborador (Mario Valiente)
-- [ ] Inicializar Git en proyecto local (Mario Valiente)
-- [ ] Conectar repositorio remoto (Mario Valiente)
-- [ ] Crear rama `main` y subir código inicial (Mario Valiente)
-- [ ] Crear rama `m1/http-request-response` (Mario Valiente)
-- [ ] Hacer commits incrementales por cada fase (Mario Valiente y Gonzalo Mansera)
+- [X] Crear repositorio en GitHub con nombre correcto (Mario Valiente)
+- [X] Añadir al profesor como colaborador (Mario Valiente)
+- [X] Inicializar Git en proyecto local (Mario Valiente)
+- [X] Conectar repositorio remoto (Gonzalo Mansera)
+- [x] Crear rama `main` y subir código inicial (Mario Valiente)
+- [x] Crear rama `m1/http-request-response` (Mario Valiente)
+- [x] Hacer commits incrementales por cada fase (Mario Valiente y Gonzalo Mansera)
 - [ ] Usar convención en mensajes de commit (`feat:`, `docs:`, `fix:`) (Mario Valiente y Gonzalo Mansera)
 - [ ] Subir rama y crear Pull Request hacia `main` (Gonzalo Mansera)
 - [ ] Incluir en PR: resumen, división de trabajo, dificultades, soluciones (Gonzalo Mansera)
 - [ ] Asignar al profesor como reviewer (Gonzalo Mansera)
 - [ ] Tras aprobación, actualizar `main` local (Gonzalo Mansera)
-- [ ] Crear tag `M1/http-request-response` y subirlo (Mario Valiente)
+- [x] Crear tag `M1/http-request-response` y subirlo (Mario Valiente)
