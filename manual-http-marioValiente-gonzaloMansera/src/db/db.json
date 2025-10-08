@@ -1,14 +1,6 @@
 {
   "students": [
     {
-      "name": "María García López",
-      "email": "maria.garcia@email.com",
-      "enrollmentDate": "2024-09-15",
-      "active": false,
-      "level": "advanced",
-      "id": "1"
-    },
-    {
       "id": "2",
       "name": "Carlos Rodríguez Martín",
       "email": "carlos.rodriguez@email.com",
@@ -61,6 +53,14 @@
       "name": "Sofía Ramírez López",
       "email": "sofia.ramirez@email.com",
       "enrollmentDate": "2024-10-06",
+      "active": true,
+      "level": "beginner"
+    },
+    {
+      "id": "c7a4",
+      "name": "Nuevo Estudiante",
+      "email": "nuevo.estudiante@email.com",
+      "enrollmentDate": "2025-01-10",
       "active": true,
       "level": "beginner"
     }
