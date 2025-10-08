@@ -60,8 +60,8 @@
   - [X] UPDATE Student (PUT) (Mario Valiente)
   - [X] PATCH Student (PATCH) (Mario Valiente)
   - [X] DELETE Student (DELETE) (Mario Valiente)
-- [ ] Realizar capturas de cada petición (request + response) (Mario Valiente)
-- [ ] Guardar capturas en `images/` (Mario Valiente)
+- [X] Realizar capturas de cada petición (request + response) (Mario Valiente)
+- [X] Guardar capturas en `images/` (Mario Valiente)
 - [ ] Documentar uso y capturas en `README.md` (Gonzalo Mansera)
 
 ## 📝 Parte 5: REST Client
@@ -109,7 +109,7 @@
 - [x] Crear rama `main` y subir código inicial (Mario Valiente)
 - [x] Crear rama `m1/http-request-response` (Mario Valiente)
 - [x] Hacer commits incrementales por cada fase (Mario Valiente y Gonzalo Mansera)
-- [ ] Usar convención en mensajes de commit (`feat:`, `docs:`, `fix:`) (Mario Valiente y Gonzalo Mansera)
+- [X] Usar convención en mensajes de commit (`feat:`, `docs:`, `fix:`) (Mario Valiente y Gonzalo Mansera)
 - [ ] Subir rama y crear Pull Request hacia `main` (Gonzalo Mansera)
 - [ ] Incluir en PR: resumen, división de trabajo, dificultades, soluciones (Gonzalo Mansera)
 - [ ] Asignar al profesor como reviewer (Gonzalo Mansera)
