@@ -53,13 +53,13 @@
 
 - [ ] Crear colección `CRUD Students API` (Mario Valiente)
 - [ ] Configurar entorno de variables (`baseUrl`, `port`, `fullUrl`) (Mario Valiente)
-- [ ] Crear peticiones:
-  - [ ] CREATE Student (POST) (Mario Valiente)
-  - [ ] GET All Students (GET) (Mario Valiente)
-  - [ ] GET Student by ID (GET) (Mario Valiente)
-  - [ ] UPDATE Student (PUT) (Mario Valiente)
-  - [ ] PATCH Student (PATCH) (Mario Valiente)
-  - [ ] DELETE Student (DELETE) (Mario Valiente)
+- [X] Crear peticiones:
+  - [X] CREATE Student (POST) (Mario Valiente)
+  - [X] GET All Students (GET) (Mario Valiente)
+  - [X] GET Student by ID (GET) (Mario Valiente)
+  - [X] UPDATE Student (PUT) (Mario Valiente)
+  - [X] PATCH Student (PATCH) (Mario Valiente)
+  - [X] DELETE Student (DELETE) (Mario Valiente)
 - [ ] Realizar capturas de cada petición (request + response) (Mario Valiente)
 - [ ] Guardar capturas en `images/` (Mario Valiente)
 - [ ] Documentar uso y capturas en `README.md` (Gonzalo Mansera)

@@ -9,19 +9,19 @@
       "id": "1"
     },
     {
-      "id": "2",
       "name": "Carlos Rodríguez Martín",
-      "email": "carlos.rodriguez@email.com",
+      "email": "carlos.rodriguez.updated@email.com",
       "enrollmentDate": "2024-10-01",
       "active": true,
-      "level": "beginner"
+      "level": "intermediate",
+      "id": "2"
     },
     {
       "id": "3",
       "name": "Ana Fernández Silva",
       "email": "ana.fernandez@email.com",
       "enrollmentDate": "2024-08-20",
-      "active": false,
+      "active": true,
       "level": "advanced"
     },
     {
