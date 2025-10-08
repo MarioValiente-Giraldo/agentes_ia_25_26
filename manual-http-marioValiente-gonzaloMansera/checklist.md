@@ -45,8 +45,8 @@
   - [x] DELETE (Gonzalo Mansera)
 - [x] Incluir comando cURL completo (Gonzalo Mansera)
 - [x] Explicar cada parte del comando (flags, método HTTP, headers) (Gonzalo Mansera)
-- [ ] Incluir respuesta HTTP real (headers + body) (Gonzalo Mansera)
-- [ ] Explicar código de estado HTTP (Gonzalo Mansera)
+- [x] Incluir respuesta HTTP real (headers + body) (Gonzalo Mansera)
+- [x] Explicar código de estado HTTP (Gonzalo Mansera)
 - [x] Guardar documentación en `README.md` (Gonzalo Mansera)
 
 ## ⚡ Parte 4: Thunder Client

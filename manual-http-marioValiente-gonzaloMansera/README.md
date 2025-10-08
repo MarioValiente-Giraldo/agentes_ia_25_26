@@ -15,24 +15,19 @@ Con el comando CREATE podemos agregar un recurso nuevo a la base de datos median
 
 ### Ejemplo comando CURL 
 ```bash
-curl -i -X POST http://localhost:4000/api/students \
+curl -i -X POST http://localhost:4000/students \
   -H "Content-Type: application/json" \
-  -d '{"id":"18","studentId":18","enrollmentDate":2025-11-23","progress":"17","completed":"false"}'
+  -d '{"name": "Nuevo Estudiante", "email": "nuevo.estudiante@email.com", "enrollmentDate": "2025-01-10", "active": true, "level": "beginner"}'
 ```
-"id": 2,
-        "studentId": 2,
-        "courseId": 2,
-        "enrollmentDate": "2024-10-01",
-        "progress": 20,
-        "completed": false
-### Eplicación detallada 
+
+### Explicación detallada 
 curl ===> Herramienta de línea de comandos para transferirdatos con URLs.
 
 -i ===>  Incluye los headers HTTP en la salida, permitiendo ver el código de estado y metadatos de la respuesta.
 
 -X POST ===> Especifica el método HTTP POST para crear un nuevo recurso.
 
-http://localhost:4000/api/productos ===> URL del endpoint donde se enviará la petición.
+http://localhost:4000/students ===> URL del endpoint donde se enviará la petición.
 
 -H "Content-Type: application/json" ===> Header que indica que el cuerpo de la petición está en formato JSON.
 
@@ -42,7 +37,7 @@ Se usa POST ya que es el método estándar de HTTP para crear nuevos recursos. E
 
 ## Headers enviados 
 ``` bash
-POST /api/students HTTP/1.1
+POST /students HTTP/1.1
 Host: localhost:4000
 Content-Type: application/json
 Content-Length: 79
@@ -52,10 +47,21 @@ El header Content-Type se envia ya que le indica al servidor que debe interpreta
 Y el Content-Lenght es el tamaño de los datos y lo envia directamente el comando CURL. 
 
 ## Respuesta HTTP
+![imagen ssh](./images/httpCreate.png)
+
+## Explicación código HTTP
+| Código                      | Significado                  | Cuándo aparece                        |
+|-----------------------------|------------------------------|---------------------------------------|
+| 201 Created                 | Recurso creado correctamente.| El servidor creó un nuevo elemento.   |
+| 400 Bad Request             | Petición mal formada.        | JSON incorrecto o datos inválidos.    |
+| 401 Unauthorized            | Falta autenticación.         | No se envió o no es válido el token.  |
+| 403 Forbidden               | No tienes permiso.           | Usuario autenticado pero sin acceso.  |
+| 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
+| 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
 
 
 
-## READ ALL 
+## 2. READ ALL 
 ### Titulo
 Listar todos los productos disponibles.
 
@@ -64,7 +70,7 @@ Recupera un listado completo de todos los recursos almacenados en la base de dat
 
 ### Ejemplo comando CURL 
 ``` bash
-curl -i -X GET http://localhost:4000/api/students \
+curl -i -X GET http://localhost:4000/students \
   -H "Accept: application/json"
 ```
 
@@ -78,15 +84,29 @@ curl -i -X GET http://localhost:4000/api/students \
 En este caso de usa el método GET ya que se este lee y consulta recursos, sin modificar los datos y los datos no van en el cuerpo si no en la URL. 
 ## Headers enviados 
 ```bash
-GET /api/students HTTP/1.1
+GET /students HTTP/1.1
 Host: localhost:4000
 Accept: application/json
 ```
 El header Accept: application/json solicita que responda en formato JSON.
 ## Respuesta HTTP
+![imagen ssh](./images/httpReadAll.png)
+
+## Explicación código HTTP
+
+| Código                      | Significado                  | Cuándo aparece                        |
+|-----------------------------|------------------------------|---------------------------------------|
+| 200 OK                      | Petición exitosa.            | Se obtuvieron los datos correctamente.|
+| 201 Created                 | Recurso creado correctamente.| El servidor creó un nuevo elemento.   |
+| 400 Bad Request             | Petición mal formada.        | JSON incorrecto o datos inválidos.    |
+| 401 Unauthorized            | Falta autenticación.         | No se envió o no es válido el token.  |
+| 403 Forbidden               | No tienes permiso.           | Usuario autenticado pero sin acceso.  |
+| 404 Not Found               | Recurso no encontrado.       | El elemento solicitado no existe.     |
+| 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
+| 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
 
 
-## READ BY ID 
+## 3. READ BY ID 
 ### Titulo
 Consultar un producto por su identificador único
 
@@ -95,7 +115,7 @@ Recupera únicamente la informacion de un recurso específico utilizando su ID. 
 
 ### Ejemplo comando CURL 
 ```bash
-curl -i -X GET http://localhost:4000/api/students/1 \
+curl -i -X GET http://localhost:4000/students/1 \
   -H "Accept: application/json"
 ```
 ### Explicación detallada 
@@ -110,22 +130,35 @@ Como hemos citado anteriormente el metodo GET se usa para leer/consultar datos, 
 
 ## Headers enviados 
 ``` bash
-GET /api/students/1 HTTP/1.1
+GET /students/1 HTTP/1.1
 Host: localhost:4000
 Accept: application/json
 ```
 
 
 ## Respuesta HTTP
+![imagen ssh](./images/httpReadById.png)
 
-## UPDATE
+## Explicación código HTTP
+| Código                      | Significado                  | Cuándo aparece                        |
+|-----------------------------|------------------------------|---------------------------------------|
+| 200 OK                      | Petición exitosa.            | Se obtuvieron los datos correctamente.|
+| 201 Created                 | Recurso creado correctamente.| El servidor creó un nuevo elemento.   |
+| 400 Bad Request             | Petición mal formada.        | JSON incorrecto o datos inválidos.    |
+| 401 Unauthorized            | Falta autenticación.         | No se envió o no es válido el token.  |
+| 403 Forbidden               | No tienes permiso.           | Usuario autenticado pero sin acceso.  |
+| 404 Not Found               | Recurso no encontrado.       | El elemento solicitado no existe.     |
+| 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
+| 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
+
+## 4. UPDATE
 ### Titulo
 Reemplazar completamente la información de un producto
 ### Descripción
 Actualiza todos los campos de un recurso existente. Para ello necesitamos el comando PUT y requiere la representación completa del recurso, si no los campos no enviados se eliminarán o tomarán valores por defecto. 
 ### Ejemplo comando CURL
 ```bash 
-curl -i -X PUT http://localhost:3000/students/1 \
+curl -i -X PUT http://localhost:4000/students/1 \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
   -d '{
@@ -158,7 +191,7 @@ Este requiere enviar todos los campos del recurso.
 ## Headers enviados 
 
 ```bash
-PUT /api/students/1 HTTP/1.1
+PUT /students/1 HTTP/1.1
 Host: localhost:4000
 Content-Type: application/json
 Accept: application/json
@@ -168,9 +201,23 @@ Content-Type: Indica formato de los datos enviados
 
 Accept: Indica formato de respuesta deseado
 ## Respuesta HTTP
+![imagen ssh](./images/httpUpdate.png)
 
 
-## PATCH
+## Explicación código HTTP
+
+| Código                      | Significado                  | Cuándo aparece                        |
+|-----------------------------|------------------------------|---------------------------------------|
+| 200 OK                      | Petición exitosa.            | Se actualizó el recurso correctamente.|
+| 201 Created                 | Recurso creado correctamente.| El servidor creó un nuevo elemento.   |
+| 400 Bad Request             | Petición mal formada.        | JSON incorrecto o datos inválidos.    |
+| 401 Unauthorized            | Falta autenticación.         | No se envió o no es válido el token.  |
+| 403 Forbidden               | No tienes permiso.           | Usuario autenticado pero sin acceso.  |
+| 404 Not Found               | Recurso no encontrado.       | El elemento solicitado no existe.     |
+| 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
+| 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
+
+## 5. PATCH
 ### Titulo
 Modificar solo campos específicos de un producto
 
@@ -179,10 +226,10 @@ Actualiza únicamente los campos especificados de un recurso sin que afecte a lo
 
 ### Ejemplo comando CURL 
 ```bash
-curl -i -X PATCH http://localhost:4000/api/students/1 \
+curl -i -X PATCH http://localhost:4000/students/1 \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
-  -d '{"email":menganito@gmail.com,"active":true}
+  -d '{"email": "menganito@gmail.com", "active": true}'
 ```
 ### Explicación detallada 
 -X PATCH ===> Método HTTP PATCH para actualización parcial
@@ -197,7 +244,7 @@ Usamos PATCH ya que solo queremos modificar algunos campos, y esto no afecta a l
 ## Headers enviados 
 
 ```bash
-PATCH /api/students/1 HTTP/1.1
+PATCH /students/1 HTTP/1.1
 Host: localhost:4000
 Content-Type: application/json
 Accept: application/json
@@ -205,8 +252,21 @@ Content-Length: 32
 ```
 
 ## Respuesta HTTP
+![imagen ssh](./images/httpPatch.png)
 
-## DELETE
+## Explicación código HTTP
+| Código                      | Significado                  | Cuándo aparece                        |
+|-----------------------------|------------------------------|---------------------------------------|
+| 200 OK                      | Petición exitosa.            | Se actualizó el recurso correctamente.|
+| 201 Created                 | Recurso creado correctamente.| El servidor creó un nuevo elemento.   |
+| 400 Bad Request             | Petición mal formada.        | JSON incorrecto o datos inválidos.    |
+| 401 Unauthorized            | Falta autenticación.         | No se envió o no es válido el token.  |
+| 403 Forbidden               | No tienes permiso.           | Usuario autenticado pero sin acceso.  |
+| 404 Not Found               | Recurso no encontrado.       | El elemento solicitado no existe.     |
+| 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
+| 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
+
+## 6. DELETE
 ### Titulo
 Eliminar un producto de la base de datos
 
@@ -216,7 +276,7 @@ Elimina permanentemente un recuso del sistema mediante su ID. Esta operación se
 ### Ejemplo comando CURL
 
 ```bash
-curl -i -X DELETE http://localhost:4000/api/students/1 \
+curl -i -X DELETE http://localhost:4000/students/1 \
   -H "Accept: application/json"
 ```
 
@@ -232,11 +292,24 @@ curl -i -X DELETE http://localhost:4000/api/students/1 \
 Usamos DELETE, ya que es el método HTTP específico para eliminar recursos, no requiere body e identifica el recurso mediante su ID 
 
 ## Headers enviados 
-DELETE /api/students/1 HTTP/1.1
+DELETE /students/1 HTTP/1.1
 Host: localhost:4000
 Accept: application/json
 
 ## Respuesta HTTP
+![imagen ssh](./images/httpDelete.png)
 
 
+## Explicación código HTTP
 
+| Código                      | Significado                  | Cuándo aparece                        |
+|-----------------------------|------------------------------|---------------------------------------|
+| 200 OK                      | Petición exitosa.            | Se eliminó el recurso correctamente.  |
+| 201 Created                 | Recurso creado correctamente.| El servidor creó un nuevo elemento.   |
+| 204 No Content              | Eliminado sin contenido.     | Se eliminó pero no se devuelve info.  |
+| 400 Bad Request             | Petición mal formada.        | JSON incorrecto o datos inválidos.    |
+| 401 Unauthorized            | Falta autenticación.         | No se envió o no es válido el token.  |
+| 403 Forbidden               | No tienes permiso.           | Usuario autenticado pero sin acceso.  |
+| 404 Not Found               | Recurso no encontrado.       | El elemento solicitado no existe.     |
+| 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
+| 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
