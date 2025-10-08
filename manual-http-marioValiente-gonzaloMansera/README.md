@@ -19,12 +19,7 @@ curl -i -X POST http://localhost:4000/students \
   -H "Content-Type: application/json" \
   -d '{"name": "Nuevo Estudiante", "email": "nuevo.estudiante@email.com", "enrollmentDate": "2025-01-10", "active": true, "level": "beginner"}'
 ```
-"id": 2,
-        "studentId": 2,
-        "courseId": 2,
-        "enrollmentDate": "2024-10-01",
-        "progress": 20,
-        "completed": false
+
 ### Explicación detallada 
 curl ===> Herramienta de línea de comandos para transferirdatos con URLs.
 
