@@ -62,7 +62,7 @@
   - [X] DELETE Student (DELETE) (Mario Valiente)
 - [X] Realizar capturas de cada petición (request + response) (Mario Valiente)
 - [X] Guardar capturas en `images/` (Mario Valiente)
-- [ ] Documentar uso y capturas en `README.md` (Gonzalo Mansera)
+- [x] Documentar uso y capturas en `README.md` (Gonzalo Mansera)
 
 ## 📝 Parte 5: REST Client
 

@@ -313,3 +313,106 @@ Accept: application/json
 | 404 Not Found               | Recurso no encontrado.       | El elemento solicitado no existe.     |
 | 422 Unprocessable Entity    | Error de validación.         | Faltan campos o valores incorrectos.  |
 | 500 Internal Server Error   | Error en el servidor.        | Fallo interno al procesar la petición.|
+
+
+# THUNDER CLIENT 
+
+Vamos a mostrar cómo realizar solicitudes a los distintos endpoints de la API mediante Thunder Client en Visual Studio Code. Cada ejemplo incluye el método HTTP, la URL, un posible cuerpo de la petición (Body) y la respuesta esperada.
+
+
+### CREATE STUDENT --> POST
+
+Esta operación se utiliza para añadir un nuevo estudiante a la base de datos. Para ello, se debe realizar una petición POST a la ruta /students.
+
+- Método: `POST` 
+- URL: http://localhost:4000/students
+- Body: 
+``` json
+{
+  "name": "Pepito Grillo",
+  "email": "pepitoGri@email.com",
+  "enrollmentDate": "2024-10-08",
+  "active": true,
+  "level": "beginner"
+}
+```
+![imagen ssh](./images/capturaCreateStudent.png)
+
+`Respuesta Exitosa (201 Created)`: La API confirmará la creación y devolverá el objeto completo del estudiante recién añadido, incluyendo el id asignado por el servidor.
+
+### GET ALL STUDENT --> GET 
+
+Esta operación se utiliza para obtener todos los estudiantes de la base de datos. Para ello, se debe realizar una petición GET a la ruta /students.
+
+- Método: `GET` 
+- URL: http://localhost:4000/students
+
+
+![imagen ssh](./images/capturaGetAllStudents.png)
+
+`Respuesta Exitosa (200 OK)`: El servidor devolverá un array de objetos JSON, donde cada objeto representa a un estudiante.
+
+
+### GET STUDENT BY ID --> GET
+
+Esta operación se utiliza para obtener un estudiante específico de la base de datos. Para ello, se debe realizar una petición GET a la ruta /
+
+- Método: `GET` 
+- URL: http://localhost:4000/students/1
+
+
+![imagen ssh](./images/capturaGetStudentById.png)
+
+`Respuesta Exitosa (200 OK)`: La API responderá con el objeto JSON con los datos del estudiante solicitado. Si no se encuentra, devolverá un error 404 Not Found.
+
+
+### UPDATE STUDENT --> PUT
+
+Esta operación se utiliza para reemplazar por completo la información de un estudiante existente. Debes enviar un objeto JSON con todos los campos del estudiante, incluso aquellos que no vas a modificar.
+
+- Método: `PUT` 
+- URL: http://localhost:4000/students/1
+- Body:
+```json
+{
+  "name": "Carlos Rodríguez Martín",
+  "email": "carlos.rodriguez.updated@email.com",
+  "enrollmentDate": "2024-10-01",
+  "active": true,
+  "level": "intermediate"
+}
+```
+
+![imagen ssh](./images/capturaUpdateStudent.png)
+
+`Respuesta Exitosa (200 OK)`: Recibirás el objeto del estudiante ya modificado.
+
+### PATCH STUDENT --> PATCH
+
+Esta operación se utiliza para actualizar parcialmente la información de un estudiante.
+
+- Método: `PATCH` 
+- URL: http://localhost:4000/students/1
+- Body:
+```json
+{
+  "active": true,
+  "level": "advanced"
+}
+```
+
+![imagen ssh](./images/capturaPatchStudent.png)
+
+`Respuesta Exitosa (200 OK)`: La API devolverá el objeto completo del estudiante con los cambios ya aplicados.
+
+### DELETE STUDENT --> DELETE
+
+Esta operación se utiliza para eliminar un estudiante de la base de datos.
+
+- Método: `DELETE` 
+- URL: http://localhost:4000/students/1
+
+
+![imagen ssh](./images/capturaDeleteStudent.png)
+
+`Respuesta Exitosa (200 OK)`: Si el estudiante se elimina correctamente, el servidor responderá con un código de confirmación y, generalmente, un cuerpo de respuesta vacío.
