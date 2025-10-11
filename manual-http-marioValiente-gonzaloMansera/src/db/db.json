@@ -71,6 +71,14 @@
       "enrollmentDate": "2025-01-10",
       "active": true,
       "level": "beginner"
+    },
+    {
+      "id": "6749",
+      "name": "Sofía Ramírez López",
+      "email": "sofia.ramirez@email.com",
+      "enrollmentDate": "2024-10-06",
+      "active": true,
+      "level": "beginner"
     }
   ],
   "courses": [

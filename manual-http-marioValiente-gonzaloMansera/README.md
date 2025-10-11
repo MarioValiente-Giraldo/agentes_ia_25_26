@@ -43,6 +43,14 @@ Content-Type: application/json
 Content-Length: 79
 ```
 El header Content-Type se envia ya que le indica al servidor que debe interpretar el cuerpo como JSON. 
+| Header | Valor |
+| :--- | :--- |
+| `POST /students HTTP/1.1` | Línea de petición que indica el método y el recurso. |
+| `Host` | `localhost:4000` | El servidor al que se dirige la petición. |
+| `Content-Type` | `application/json` | Indica que el cuerpo de la petición está en formato JSON. |
+| `Content-Length` | (calculado por cURL) | El tamaño del cuerpo de la petición. |
+
+El header `Content-Type` se envia ya que le indica al servidor que debe interpretar el cuerpo como JSON. 
 
 Y el Content-Lenght es el tamaño de los datos y lo envia directamente el comando CURL. 
 
@@ -134,6 +142,11 @@ GET /students/1 HTTP/1.1
 Host: localhost:4000
 Accept: application/json
 ```
+| Header | Valor |
+| :--- | :--- |
+| `GET /students/1 HTTP/1.1` | Línea de petición que indica el método y el recurso. |
+| `Host` | `localhost:4000` | El servidor al que se dirige la petición. |
+| `Accept` | `application/json` | Indica que el cliente espera una respuesta en formato JSON. |
 
 
 ## Respuesta HTTP
@@ -292,10 +305,11 @@ curl -i -X DELETE http://localhost:4000/students/1 \
 Usamos DELETE, ya que es el método HTTP específico para eliminar recursos, no requiere body e identifica el recurso mediante su ID 
 
 ## Headers enviados 
+```bash
 DELETE /students/1 HTTP/1.1
 Host: localhost:4000
 Accept: application/json
-
+```
 ## Respuesta HTTP
 ![imagen ssh](./images/httpDelete.png)
 
@@ -416,3 +430,11 @@ Esta operación se utiliza para eliminar un estudiante de la base de datos.
 ![imagen ssh](./images/capturaDeleteStudent.png)
 
 `Respuesta Exitosa (200 OK)`: Si el estudiante se elimina correctamente, el servidor responderá con un código de confirmación y, generalmente, un cuerpo de respuesta vacío.
+
+
+# REST CLIENT 
+## CREATE 
+![imagen ssh](./images/restClientCreate.png)
+
+## READ BY ID 
+![imagen ssh](./images/restClientReadById.png)
