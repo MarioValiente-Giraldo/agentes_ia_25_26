@@ -1,124 +1,153 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import { exec } from "child_process";
+import util from "util";
+import { uid } from "uid";
 
 dotenv.config();
 
+const execPromise = util.promisify(exec);
 const BASE_URL = `${process.env.API_BASE_URL}:${process.env.PORT}/students`;
 /**
- *  Crea un estudiante y envia los datos al servidor 
- * @param {Object} studentData - Parametro que contiene los datos del estudiante a crear 
+ * Ejecuta un comando 'curl' en el shell del sistema operativo
+ * y captura su salida de forma asíncrona.
+ *
+ * @param {string} curlCommand El comando completo de curl a ejecutar .
+ * @returns {Promise<string | null>} Una promesa que se resuelve con la salida estándar (stdout) limpia del comando,
+ * o 'null' si ocurre un error durante la ejecución.
+ * @async
  */
+async function runCurl(curlCommand) {
+  try {
+    //execPromise ejecuta el comando y no avanza hasta recibir su respuesta
+    const { stdout, stderr } = await execPromise(curlCommand);
 
-function createStudent(studentData){
-    const curl = `curl -X POST ${BASE_URL} -H "Content-Type: application/json" -d '${JSON.stringify(studentData)}'`;
-    console.log(curl)
-}
-/**
- * Muestra todos los datos(estudiantes) de la base de datos 
- */
+    // Si hay contenido en el error estándar, lo muestra como una advertencia
+    if (stderr) console.error("⚠️ stderr:", stderr);
 
-function readAllStudents(){
-    const curl = `curl -X GET ${BASE_URL}`;
-    console.log(curl);
-}
-
-/**
- * 
- * @param {number} id  //Coge el id del estudiante y te muestra su informacion 
- */
-
-function readStudentById(id){
-    const curl = `curl -X GET ${BASE_URL}/${id}`;
-    console.log(curl);
+    // Retorna la salida estándar limpia (sin espacios o saltos de línea al inicio/final)
+    return stdout.trim();
+  } catch (error) {
+    // Captura y registra cualquier error crítico de ejecución del comando
+    console.error("❌ Error al ejecutar curl:", error.message);
+    return null;
+  }
 }
 
-
-/**
- * Actualiza los datos del estudiante usando su id 
- * @param {number} id //El id del estudiante que queremos actualizar 
- * @param {Object} studentData //El objeto con los nuevos datos del estudiante  
- */
-
-function updateStudent(id, studentData){
-    const curl = `curl -X PUT ${BASE_URL}/${id} -H "Content-Type: application/json" -d '${JSON.stringify(studentData)}'`;
-    console.log(curl)
+/** Crear un estudiante */
+async function createStudent(studentData) {
+  const jsonData = JSON.stringify(studentData).replace(/"/g, '\\"');
+  const curl = `curl -s -X POST ${BASE_URL} -H "Content-Type: application/json" -d "${jsonData}"`;
+  const output = await runCurl(curl);
+  try {
+    const data = JSON.parse(output);
+    console.log("✅ Estudiante creado:", data);
+    return data;
+  } catch {
+    console.log("⚠️ Respuesta sin formato JSON:", output);
+  }
 }
 
-/**
- * Actualiza unicamente los 
- * @param {number} id -- El id del estudiante que queremos actualizar 
- * @param {Object} partialData --Los datos que queremos cambiar 
- */
-
-function patchStudent(id, partialData){
-    const curl = `curl -X PATCH ${BASE_URL}/${id} -H "Content-Type: application/json" -d '${JSON.stringify(partialData)}'`;
-    console.log(curl);
+/** Leer todos los estudiantes */
+async function readAllStudents() {
+  const curl = `curl -s -X GET ${BASE_URL}`;
+  const output = await runCurl(curl);
+  try {
+    const data = JSON.parse(output);
+    console.log("📚 Todos los estudiantes:", data);
+    return data;
+  } catch {
+    console.log(output);
+  }
 }
 
-
-/**
- * 
- * @param {number} id //Elimina al estudiante de la BD con su ID  
- */
-
-function deleteStudent(id){
-    const curl = `curl -X DELETE ${BASE_URL}/${id}`;
-    console.log(curl);
-
+/** Leer un estudiante por ID */
+async function readStudentById(id) {
+  const curl = `curl -s -X GET ${BASE_URL}/${id}`;
+  const output = await runCurl(curl);
+  try {
+    const data = JSON.parse(output);
+    console.log("👤 Estudiante encontrado:", data);
+    return data;
+  } catch {
+    console.log(output);
+  }
 }
 
-/**
- * Es una función la cual comprueba que las funciones CRUD han funcionado correctamente
- */
+/** Actualizar estudiante (PUT) */
+async function updateStudent(id, studentData) {
+  const jsonData = JSON.stringify(studentData).replace(/"/g, '\\"');
+  const curl = `curl -s -X PUT ${BASE_URL}/${id} -H "Content-Type: application/json" -d "${jsonData}"`;
+  const output = await runCurl(curl);
+  try {
+    const data = JSON.parse(output);
+    console.log("🔁 Estudiante actualizado:", data);
+    return data;
+  } catch {
+    console.log(output);
+  }
+}
 
-function testCrud() {
+/** Actualización parcial (PATCH) */
+async function patchStudent(id, partialData) {
+  const jsonData = JSON.stringify(partialData).replace(/"/g, '\\"');
+  const curl = `curl -s -X PATCH ${BASE_URL}/${id} -H "Content-Type: application/json" -d "${jsonData}"`;
+  const output = await runCurl(curl);
+  try {
+    const data = JSON.parse(output);
+    console.log("🧩 Estudiante actualizado parcialmente:", data);
+    return data;
+  } catch {
+    console.log(output);
+  }
+}
+
+/** Eliminar estudiante */
+async function deleteStudent(id) {
+  const curl = `curl -s -X DELETE ${BASE_URL}/${id}`;
+  const output = await runCurl(curl);
+  try {
+    const data = JSON.parse(output);
+    console.log("🗑️ Estudiante eliminado:", data);
+    return data;
+  } catch {
+    console.log(output);
+  }
+}
+
+/** Test CRUD completo */
+async function testCrud() {
+  console.log("\n=== INICIO DEL TEST CRUD ===\n");
+
+  const newId = uid(4);
   const newStudent = {
-    id: 1,
+    id: newId,
     name: "Mario Valiente",
     email: "mario.valiente@email.com",
     enrollmentDate: "2024-10-01",
     active: true,
-    level: "beginner"
+    level: "beginner",
   };
 
-  console.log("\n=== INICIO DEL TEST CRUD ===");
+  console.log(`[1] Creando estudiante con ID ${newId}...`);
+  await createStudent(newStudent);
 
-  // 1. Crear
-  console.log("\n[1] Creando estudiante...");
-  createStudent(newStudent);
-  console.log("✅ Estudiante creado\n");
+  console.log("\n[2] Leyendo todos los estudiantes...");
+  await readAllStudents();
 
-  // 2. Leer todos
-  console.log("[2] Leyendo todos los estudiantes...");
-  readAllStudents();
-  console.log("✅ Se listaron todos los estudiantes\n");
+  console.log(`\n[3] Leyendo estudiante con ID ${newId}...`);
+  await readStudentById(newId);
 
-  // 3. Leer por ID
-  console.log("[3] Leyendo estudiante por ID...");
-  readStudentById(newStudent.id);
-  console.log(`✅ Estudiante con ID ${newStudent.id} obtenido\n`);
+  console.log(`\n[4] Actualizando estudiante (PUT)...`);
+  await updateStudent(newId, { ...newStudent, level: "advanced" });
 
-  // 4. Actualizar (PUT)
-  console.log("[4] Actualizando estudiante...");
-  updateStudent(newStudent.id, {
-    ...newStudent,
-    level: "advanced", // cambiamos un campo
-  });
-  console.log("✅ Estudiante actualizado completamente (nivel avanzado)\n");
+  console.log(`\n[5] Actualizando parcialmente estudiante (PATCH)...`);
+  await patchStudent(newId, { active: false });
 
-  // 5. Actualizar parcialmente
-  console.log("[5] Actualizando parcialmente estudiant...");
-  patchStudent(newStudent.id, { active: false });
-  console.log("✅ Estudiante actualizado parcialmente (activo=false)\n");
+  console.log(`\n[6] Eliminando estudiante...`);
+  await deleteStudent(newId);
 
-  // 6. Eliminar
-  console.log("[6] Eliminando estudiante...");
-  deleteStudent(newStudent.id);
-  console.log("✅ Estudiante eliminado\n");
-
-  console.log("=== FIN DEL TEST CRUD ===\n");
+  console.log("\n=== FIN DEL TEST CRUD === ✅\n");
 }
 
 testCrud();
-
-
 
