@@ -1,0 +1,82 @@
+@BASEURL = http://localhost
+@PORT = 4000
+@APIURL = {{BASEURL}}:{{PORT}}/students
+
+# ---------------------------
+# CREATE Student - Añadir uno nuevo
+# ---------------------------
+### CREATE Student
+POST {{APIURL}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Sofía Ramírez López",
+  "email": "sofia.ramirez@email.com",
+  "enrollmentDate": "2024-10-06",
+  "active": true,
+  "level": "beginner"
+}
+
+# ---------------------------
+# READ All Students - Obtener todos
+# ---------------------------
+### READ All Students
+GET {{APIURL}}
+Accept: application/json
+
+# ---------------------------
+# READ Student by ID - Ejemplo id=3
+# ---------------------------
+### READ Student by ID
+GET {{APIURL}}/3
+Accept: application/json
+
+# ---------------------------
+# READ Estudiantes Activos - Filtrado por query param
+# ---------------------------
+### READ Estudiantes Activos
+GET {{APIURL}}?active=true
+Accept: application/json
+
+# ---------------------------
+# READ Filtrar por nivel - Ejemplo: intermediate
+# ---------------------------
+### READ Filtrar por Nivel (intermediate)
+GET {{APIURL}}?level=intermediate
+Accept: application/json
+
+# ---------------------------
+# UPDATE Student (PUT) - Reemplaza todo el recurso (ej. id=1)
+# ---------------------------
+### UPDATE Student (PUT)
+PUT {{APIURL}}/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "María García López",
+  "email": "maria.garcia@email.com",
+  "enrollmentDate": "2024-09-15",
+  "active": false,
+  "level": "advanced"
+}
+
+# ---------------------------
+# PATCH Student - Actualiza campo(s) parciales (ej. id=4)
+# ---------------------------
+### PATCH Student
+PATCH {{APIURL}}/4
+Content-Type: application/json
+Accept: application/json
+
+{
+  "active": false
+}
+
+# ---------------------------
+# DELETE Student - Eliminar recurso (ej. id=7)
+# ---------------------------
+### DELETE Student
+DELETE {{APIURL}}/7
+Accept: application/json
