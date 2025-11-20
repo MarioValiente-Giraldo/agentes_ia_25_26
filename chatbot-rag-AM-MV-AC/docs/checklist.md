@@ -9,15 +9,15 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | # | Tarea | Estado | Asignado a | Observaciones |
 | :--- | :--- | :--- | :--- | :--- |
 | **1.1** | **🏗 Inicialización del proyecto** | |  | |
-| 1.1.1 | Crear carpeta del proyecto: `chatbot-rag-[tu-nombre-iniciales]` | ☐ | Mario | |
+| 1.1.1 | Crear carpeta del proyecto: `chatbot-rag-[tu-nombre-iniciales]` | [x] | Mario | |
 | 1.1.2 | Inicializar repositorio Git: `git init` | ☐ | Mario | |
-| 1.1.3 | Crear rama de trabajo: `git checkout -b hito2/rag-embeddings` | ☐ | Mario | |
+| 1.1.3 | Crear rama de trabajo: `git checkout -b hito2/rag-embeddings` | [x] | Mario | |
 | **1.2** | **📦 Instalación de dependencias** | | | |
-| 1.2.1 | Crear `package.json`: `npm init -y` | ☐ | Mario | |
-| 1.2.2 | Instalar dependencias de producción: `npm install dotenv better-sqlite3 express` | ☐ | Mario | |
-| 1.2.3 | Instalar dependencias de desarrollo: `npm install --save-dev nodemon` | ☐ | Mario | |
+| 1.2.1 | Crear `package.json`: `npm init -y` | [x] | Mario | |
+| 1.2.2 | Instalar dependencias de producción: `npm install dotenv better-sqlite3 express` | [x] | Mario | |
+| 1.2.3 | Instalar dependencias de desarrollo: `npm install --save-dev nodemon` | [x] | Mario | |
 | **1.3** | **⚙ Configuración de package.json** | | | |
-| 1.3.1 | Configurar como ESM: `"type": "module"` | ☐ | Mario | |
+| 1.3.1 | Configurar como ESM: `"type": "module"` | [x] | Mario | |
 | 1.3.2 | Añadir script: `"procesar"` | ☐ | | |
 | 1.3.3 | Añadir script: `"embeddings"` | ☐ | | |
 | 1.3.4 | Añadir script: `"cargar-bd"` | ☐ | | |
@@ -25,17 +25,17 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | 1.3.6 | Añadir script: `"test-busqueda"` | ☐ | | |
 | 1.3.7 | Añadir script: `"dev"` | ☐ | | |
 | **1.4** | **📂 Estructura de carpetas** | |  | |
-| 1.4.1 | Crear carpeta `datos/` | ☐ | Mario | |
-| 1.4.2 | Crear carpeta `scripts/` | ☐ | Mario | |
-| 1.4.3 | Crear carpeta `backend/` | ☐ | Mario | |
+| 1.4.1 | Crear carpeta `datos/` | [x] | Mario | |
+| 1.4.2 | Crear carpeta `scripts/` | [x] | Mario | |
+| 1.4.3 | Crear carpeta `backend/` | [x] | Mario | |
 | **1.5** | **🔧 Archivos de configuración** | |  | |
-| 1.5.1 | Crear archivo `.env` con variables | ☐ | Mario | |
-| 1.5.2 | Crear `.env.example` (template) | ☐ | Mario | |
-| 1.5.3 | Crear `.gitignore` con exclusiones necesarias | ☐ | Mario | |
+| 1.5.1 | Crear archivo `.env` con variables | [x] | Mario | |
+| 1.5.2 | Crear `.env.example` (template) | [x] | Mario | |
+| 1.5.3 | Crear `.gitignore` con exclusiones necesarias | [x] | Mario | |
 | **1.6** | **📄 Archivo ROF** | |  | |
-| 1.6.1 | Obtener ROF del centro en formato texto | ☐ | Mario | |
-| 1.6.2 | Guardar en `datos/rof.txt` | ☐ | Mario | |
-| 1.6.3 | Verificar que tenga al menos 5000 caracteres | ☐ | Mario | |
+| 1.6.1 | Obtener ROF del centro en formato texto | [x] | Mario | |
+| 1.6.2 | Guardar en `datos/rof.txt` | [x] | Mario | |
+| 1.6.3 | Verificar que tenga al menos 5000 caracteres | [x] | Mario | |
 
 ---
 
