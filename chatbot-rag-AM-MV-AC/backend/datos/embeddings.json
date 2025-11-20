@@ -1,0 +1,26 @@
+[
+  {
+    "contenido": "Este es el primer fragmento de prueba.",
+    "embedding": [0.12, 0.34, 0.56, 0.78, 0.90],
+    "fuente": "documento_prueba.pdf",
+    "pagina": 1
+  },
+  {
+    "contenido": "Segundo fragmento de prueba con texto distinto.",
+    "embedding": [0.21, 0.43, 0.65, 0.87, 0.09],
+    "fuente": "documento_prueba.pdf",
+    "pagina": 2
+  },
+  {
+    "contenido": "Tercer fragmento de prueba para verificar inserción.",
+    "embedding": [0.11, 0.22, 0.33, 0.44, 0.55],
+    "fuente": "documento_prueba.pdf",
+    "pagina": 3
+  },
+  {
+    "contenido": "Cuarto fragmento de prueba, con contenido adicional.",
+    "embedding": [0.99, 0.88, 0.77, 0.66, 0.55],
+    "fuente": "documento_prueba.pdf",
+    "pagina": 4
+  }
+]
