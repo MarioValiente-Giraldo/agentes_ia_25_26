@@ -5,7 +5,8 @@
   "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "cargar-bd": "node scripts/cargar_bd.js"
   },
   "keywords": [],
   "author": "",
