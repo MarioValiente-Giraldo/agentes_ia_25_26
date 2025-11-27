@@ -50,16 +50,9 @@ async function buscarFragmentosSimilares(consulta, limite = 3) {
     const fragmentos = await fetch("/fragmentos.json").then(r => r.json());
     const embeddingConsulta = await generarEmbedding();
 
-    function similitudCoseno(v1, v2) {
-        const magnitudV1 = Math.sqrt(v1.reduce((s, n) => s + n * n, 0));
-        const magnitudV2 = Math.sqrt(v2.reduce((s, n) => s + n * n, 0));
-        const productoVectores = v1.reduce((s, val, i) => s + val * v2[i], 0);
-        return productoVectores / (magnitudV1 * magnitudV2);
-    }
-
     const resultados = fragmentos.map(frag => ({
         texto: frag.texto,
-        similitud: similitudCoseno(embeddingConsulta, frag.embedding)
+        similitud: calcularSimilitud(embeddingConsulta, frag.embedding)
     }));
 
     resultados.sort((a, b) => b.similitud - a.similitud);
