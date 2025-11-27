@@ -35,27 +35,49 @@ function calcularSimilitud(v1, v2){
  * @param {number} limite - Número máximo de fragmentos a devolver
  * @return {Array} - Array de objetos con fragmento y puntuación
 */
-async function buscarFragmentosSimilares(consulta, limite = 3) {
+async function buscarFragmentosSimilares(consulta, limite = 3){
 
-    async function generarEmbedding() {
-        const respuesta = await fetch("http://localhost:11434/api/embed", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ model: "nomic-embed-text", input: consulta })
-        });
-        const datos = await respuesta.json();
-        return datos.embeddings[0];
+    //generar embedding de la consulta
+
+    const respuesta = await fetch("http://localhost:11434/api/embed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            model: "nomic-embed-text",
+            input: consulta
+        })
+    });
+    const datos = await respuesta.json();
+    const embeddingConsulta = datos.embeddings[0];
+
+    //leer base de datos de fragmentos
+
+    async function leerBD(){
+        const respuesta = await fetch("datos/embeddings.json");
+        return await respuesta.json();
+
     }
+    const fragmentos = await leerBD();
 
-    const fragmentos = await fetch("/fragmentos.json").then(r => r.json());
-    const embeddingConsulta = await generarEmbedding();
+    // retorno n fragmentos con mayor similitud
 
-    const resultados = fragmentos.map(frag => ({
-        texto: frag.texto,
-        similitud: calcularSimilitud(embeddingConsulta, frag.embedding)
-    }));
+    let resultados = [];
+    for(const frag of fragmentos){
+        const simil = calcularSimilitud(embeddingConsulta, frag.embedding);
+        resultados.push({
+            fragmento: frag.texto,
+            similitud: simil
+        });
+    }
+    resultados.sort((a,b)=> b.similitud - a.similitud);
+    const mejores = resultados.slice(0,limite);
 
-    resultados.sort((a, b) => b.similitud - a.similitud);
-    return resultados.slice(0, limite);
+    //mostrar puntuaciones de similitud
+
+    console.log("Similitudes: ");
+    mejores.forEach(resultado =>{
+        console.log(resultado.similitud.toFixed(4), "→", resultado.fragmento);
+    });
+    return mejores;
 }
 
