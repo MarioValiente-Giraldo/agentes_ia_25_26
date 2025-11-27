@@ -81,3 +81,21 @@ async function buscarFragmentosSimilares(consulta, limite = 3){
     return mejores;
 }
 
+/**
+ * Función para hacer ejemplos de prueba con consultas
+ */
+async function probarConsultas(){
+    const consultas = [
+        "¿Cuál es el horario de entrada?",
+        "¿Qué hacer ante inasistencias?",
+        "Uniforme del centro"
+    ];
+    for (const consulta of consultas){
+        console.log(`\nResultado: ${consulta}`);
+        const resultados = await buscarFragmentosSimilares(consulta); 
+        resultados.forEach(res=> {
+            console.log(res.similitud.toFixed(4), "→",res.fragmento);
+        });
+    }
+}
+
