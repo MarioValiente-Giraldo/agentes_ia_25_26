@@ -1,12 +1,19 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "backend/scripts/procesar_rof.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "cargar-bd": "node scripts/cargar_bd.js"
+  "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+  "test:backend": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js backend/tests",
+  "procesar": "node backend/scripts/procesar_rof.js",
+  "start": "node server.js",
+  "cargar-bd": "node scripts/cargar_bd.js"
+},
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "transform": {}
   },
   "keywords": [],
   "author": "",
