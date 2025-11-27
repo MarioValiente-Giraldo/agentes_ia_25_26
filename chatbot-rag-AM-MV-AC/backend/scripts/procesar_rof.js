@@ -17,15 +17,18 @@ const __dirname = path.dirname(__filename);
  * crea un array de objetos con id, contenido, fuente y página,
  * guarda el resultado en JSON y muestra estadísticas.
  *
+ * @param {string} rutaEntrada - Ruta del archivo de entrada (opcional)
+ * @param {string} rutaSalida - Ruta del archivo de salida (opcional)
  * @returns {Array} chunks - Array de fragmentos procesados
  */
-export function procesarROF() {
+export function procesarROF(rutaEntrada = null, rutaSalida = null) {
     try {
-        const rutaEntrada = path.join(__dirname, '../datos/rof.txt');
-        const rutaSalida = path.join(__dirname, '../datos/chunks.json');
+        // Usar rutas por defecto si no se proporcionan
+        const archivoEntrada = rutaEntrada || path.join(__dirname, '../datos/rof.txt');
+        const archivoSalida = rutaSalida || path.join(__dirname, '../datos/chunks.json');
 
         // Leer archivo
-        const texto = fs.readFileSync(rutaEntrada, 'utf8');
+        const texto = fs.readFileSync(archivoEntrada, 'utf8');
 
         // Dividir por líneas en blanco
         const fragmentos = texto.split(/\n\s*\n/);
@@ -43,16 +46,19 @@ export function procesarROF() {
                 continue;
             }
 
+            // Usar el nombre del archivo de entrada como fuente
+            const nombreFuente = path.basename(archivoEntrada);
+
             chunks.push({
                 id: id++,
                 contenido: limpio,
-                fuente: "rof.txt",
+                fuente: nombreFuente,
                 pagina: null
             });
         }
 
-        // Guardar en datos/chunks.json
-        fs.writeFileSync(rutaSalida, JSON.stringify(chunks, null, 2), 'utf8');
+        // Guardar en archivo JSON
+        fs.writeFileSync(archivoSalida, JSON.stringify(chunks, null, 2), 'utf8');
 
         // Cálculo total de caracteres
         let totalCaracteres = 0;
