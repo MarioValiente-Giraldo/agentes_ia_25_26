@@ -12,16 +12,13 @@ export function App() {
   const header = document.createElement('div');
   header.className = 'bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-500 p-4 text-white shadow-md z-10';
 
-  // Wrapper del contenido del header
   const headerContent = document.createElement('div');
   headerContent.className = 'flex items-center gap-3';
 
-  // Avatar
   const avatar = document.createElement('div');
   avatar.className = 'w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-xl';
   avatar.textContent = '🤖';
 
-  // Información (Texto)
   const infoDiv = document.createElement('div');
 
   const title = document.createElement('h3');
@@ -31,14 +28,11 @@ export function App() {
   const statusText = document.createElement('p');
   statusText.className = 'text-indigo-100 text-xs flex items-center gap-1';
 
-  // Indicador de estado (Punto verde)
   const statusDot = document.createElement('span');
   statusDot.className = 'w-2 h-2 bg-green-400 rounded-full animate-pulse';
 
-  // Texto "En línea"
   const statusLabel = document.createTextNode(' En línea');
 
-  // Ensamblaje del Header
   statusText.appendChild(statusDot);
   statusText.appendChild(statusLabel);
   infoDiv.appendChild(title);
@@ -56,7 +50,7 @@ export function App() {
   container.appendChild(messages);
 
   // ---------------------------------------------------------
-  // 4. Formulario de entrada
+  // 4. Formulario
   // ---------------------------------------------------------
   const form = document.createElement('form');
   form.className = 'p-4 bg-white border-t border-gray-100 flex gap-2';
@@ -71,18 +65,17 @@ export function App() {
   button.type = 'submit';
   button.className = 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:shadow-purple-300 transform hover:scale-105 transition-all duration-200';
 
-  // Creación del icono SVG de forma segura (Namespaced)
-  const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svgIcon.setAttribute('fill', 'none');
-  svgIcon.setAttribute('viewBox', '0 0 24 24');
-  svgIcon.setAttribute('stroke-width', '2');
-  svgIcon.setAttribute('stroke', 'currentColor');
-  svgIcon.classList.add('w-5', 'h-5');
+  const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgIcon.setAttribute("fill", "none");
+  svgIcon.setAttribute("viewBox", "0 0 24 24");
+  svgIcon.setAttribute("stroke-width", "2");
+  svgIcon.setAttribute("stroke", "currentColor");
+  svgIcon.classList.add("w-5", "h-5");
 
-  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('stroke-linecap', 'round');
-  path.setAttribute('stroke-linejoin', 'round');
-  path.setAttribute('d', 'M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5');
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("stroke-linecap", "round");
+  path.setAttribute("stroke-linejoin", "round");
+  path.setAttribute("d", "M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5");
 
   svgIcon.appendChild(path);
   button.appendChild(svgIcon);
@@ -90,7 +83,7 @@ export function App() {
   container.appendChild(form);
 
   // ---------------------------------------------------------
-  // 5. Lógica del Chat
+  // 5. Función agregar mensaje
   // ---------------------------------------------------------
   function addMessage(text, sender = 'user') {
     const wrapper = document.createElement('div');
@@ -107,29 +100,55 @@ export function App() {
 
     wrapper.appendChild(msg);
     messages.appendChild(wrapper);
-    
+
     setTimeout(() => {
       messages.scrollTop = messages.scrollHeight;
     }, 50);
   }
 
-  // Mensaje inicial
+  // Saludo inicial
   setTimeout(() => addMessage('¡Hola! ¿En qué puedo ayudarte hoy? 🎨', 'bot'), 100);
 
-  // Manejo del Submit
-  form.addEventListener('submit', (e) => {
+  // ---------------------------------------------------------
+  // 6. Enviar pregunta al backend
+  // ---------------------------------------------------------
+  async function consultarBackend(prompt) {
+    try {
+      const resp = await fetch("http://localhost:3002/api/consulta", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+
+      const data = await resp.json();
+      return data.respuesta || "No pude obtener la respuesta 😢";
+    } catch (e) {
+      console.error(e);
+      return "Error al conectar con el servidor.";
+    }
+  }
+
+  // ---------------------------------------------------------
+  // 7. Submit del chat
+  // ---------------------------------------------------------
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const text = input.value.trim();
     if (!text) return;
-    
-    addMessage(text, 'user');
-    input.value = '';
-    input.focus();
 
-    // Respuesta simulada
-    setTimeout(() => {
-      addMessage('¡Eso suena genial! Cuéntame más. ✨', 'bot');
-    }, 800);
+    addMessage(text, "user");
+    input.value = "";
+
+    // mensaje de "pensando"
+    const thinkingMsg = addMessage("Espera un momento... ⏳", "bot");
+
+    const respuesta = await consultarBackend(text);
+
+    // borrar mensaje de "pensando"
+    messages.removeChild(messages.lastChild);
+
+    addMessage(respuesta, "bot");
   });
 
   return container;
