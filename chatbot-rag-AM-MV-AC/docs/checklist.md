@@ -66,8 +66,8 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | 2.3.5 | Implementar `verificarBD()` (contar fragmentos) | ☐ | Ale | |
 | 2.3.6 | Probar ejecución: `npm run cargar-bd` | ☐ | Ale | |
 | **2.4** | **🔍 `scripts/test_busqueda.js`** | `test_busqueda.js` | |  | |
-| 2.4.1 | Implementar `calcularSimilitud(v1, v2)` (Coseno) | ☐ | Claudia | |
-| 2.4.2 | Implementar `buscarFragmentosSimilares(consulta, limite=3)` | ☐ | Claudia | |
+| 2.4.1 | Implementar `calcularSimilitud(v1, v2)` (Coseno) | [x] | Claudia | |
+| 2.4.2 | Implementar `buscarFragmentosSimilares(consulta, limite=3)` | [x] | Claudia | |
 | 2.4.3 | Generar embedding de consulta y buscar en BD | ☐ | Claudia | |
 | 2.4.4 | Mostrar N fragmentos más similares y su puntuación | ☐ | Claudia | |
 | 2.4.5 | Crear ejemplos de prueba (e.g., Horario, Inasistencias, Uniforme) | ☐ | Claudia | |
@@ -92,16 +92,16 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 
 | # | Tarea | Archivo | Estado | Asignado a | Observaciones |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 4.1 | **📖 `README.md`** | `README.md` | |  | |
-| 4.1.1 | Descripción del proyecto (RAG, embeddings, flujo) | ☐ | | |
-| 4.1.2 | Requisitos (Node.js, Docker, Ollama, ROF) | ☐ | | |
-| 4.1.3 | Instalación (clonar, instalar, configurar) | ☐ | | |
-| 4.1.4 | Ejecución completa (`npm run ingesta`) | ☐ | | |
-| 4.1.5 | Scripts individuales | ☐ | | |
-| 4.1.6 | Estructura de datos (archivos y tabla `fragmentos`) | ☐ | | |
+| 4.1 | **📖 `README.md`** | `README.md` | [x] | Claudia | |
+| 4.1.1 | Descripción del proyecto (RAG, embeddings, flujo) | [x] | Claudia | |
+| 4.1.2 | Requisitos (Node.js, Docker, Ollama, ROF) | [x] | Claudia | |
+| 4.1.3 | Instalación (clonar, instalar, configurar) | [x] | Claudia | |
+| 4.1.4 | Ejecución completa (`npm run ingesta`) | [x] | Claudia | |
+| 4.1.5 | Scripts individuales | [x] | Claudia | |
+| 4.1.6 | Estructura de datos (archivos y tabla `fragmentos`) | [x] | Claudia | |
 | 4.1.7 | Explicación: ¿Qué es un embedding? | ☐ | | |
-| 4.1.8 | Decisiones de diseño (SQLite3, nomic-embed-text, tamaño mínimo) | ☐ | | |
-| 4.1.9 | Próximas Fases (backend, frontend) | ☐ | | |
+| 4.1.8 | Decisiones de diseño (SQLite3, nomic-embed-text, tamaño mínimo) | [x] | Claudia | |
+| 4.1.9 | Próximas Fases (backend, frontend) | [x] | Claudia | |
 
 ---
 
