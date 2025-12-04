@@ -68,10 +68,10 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | **2.4** | **🔍 `scripts/test_busqueda.js`** | `test_busqueda.js` | |  | |
 | 2.4.1 | Implementar `calcularSimilitud(v1, v2)` (Coseno) | [x] | Claudia | |
 | 2.4.2 | Implementar `buscarFragmentosSimilares(consulta, limite=3)` | [x] | Claudia | |
-| 2.4.3 | Generar embedding de consulta y buscar en BD | ☐ | Claudia | |
-| 2.4.4 | Mostrar N fragmentos más similares y su puntuación | ☐ | Claudia | |
-| 2.4.5 | Crear ejemplos de prueba (e.g., Horario, Inasistencias, Uniforme) | ☐ | Claudia | |
-| 2.4.6 | Probar ejecución: `npm run test-busqueda` | ☐ | Claudia | |
+| 2.4.3 | Generar embedding de consulta y buscar en BD | [x] | Claudia | |
+| 2.4.4 | Mostrar N fragmentos más similares y su puntuación | [x] | Claudia | |
+| 2.4.5 | Crear ejemplos de prueba (e.g., Horario, Inasistencias, Uniforme) | [x] | Claudia | |
+| 2.4.6 | Probar ejecución: `npm run test-busqueda` | [x] | Claudia | |
 
 ---
 
