@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 //Cargamos las variables de entorno
 dotenv.config();
 
-const OLLAMA_URL = process.env.OLLAMA_URL;
+const OLLAMA_URL = 'http://127.0.0.1:11434';
+
 const CHUNKS_PATH = process.env.CHUNKS_PATH;
 const OUTPUT_PATH = process.env.OUTPUT_PATH;
 
@@ -18,8 +19,8 @@ async function comprobarConexionOllama(){
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                model: "nomic-embed-text",
-                prompt: "ping"
+                model: "nomic-embed-text:latest",
+                input: "ping"
             })
         });
         if(!response.ok) throw new Error();
@@ -30,24 +31,33 @@ async function comprobarConexionOllama(){
     }
 }
 
-async function generarEmbedding(texto){ // ❌ Estaba "text", debe ser "texto"
-    try{
-        const response = await fetch(OLLAMA_URL,{
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                model: "nomic-embed-text",
-                prompt: texto // ✅ Ahora coincide con el parámetro
-            })
-        });
-        if(!response.ok) throw new Error("Respuesta no válida");
 
-        const data = await response.json();
+    async function generarEmbedding(texto) {
+    try {
+        const res = await fetch('http://127.0.0.1:11434/api/embeddings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            model: 'nomic-embed-text',
+            input: texto
+        })
+        });
+
+        const data = await res.json();
+
+        if (!data.embedding || !Array.isArray(data.embedding)) {
+        console.error("⚠️ Respuesta inesperada de Ollama:", data);
+        throw new Error('Respuesta no válida de Ollama');
+        }
+
         return data.embedding;
-    }catch(error){
-        console.error("⚠️ Error generando embedding:", error); // ❌ Estaba "err", debe ser "error"
+
+    } catch (error) {
+        console.error("⚠️ Error generando embedding:", error);
+        return null;
     }
-}
+    }
+
 
 async function procesarTodos(){
     await comprobarConexionOllama();
