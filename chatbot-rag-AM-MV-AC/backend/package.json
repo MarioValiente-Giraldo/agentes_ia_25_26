@@ -7,6 +7,7 @@
   "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
   "test:backend": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js backend/tests",
   "test:embeddings": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js test/generar_embeddings.test.js",
+  "test:busqueda": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js ./tests/test_busqueda.test.js",
   "procesar": "node backend/scripts/procesar_rof.js",
   "start": "node server.js",  
   "cargar-bd": "node scripts/cargar_bd.js"
