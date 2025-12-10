@@ -1,5 +1,4 @@
 //Importaciones
-
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -24,13 +23,21 @@ const __dirname = path.dirname(__filename);
 export function procesarROF(rutaEntrada = null, rutaSalida = null) {
     try {
         // Usar rutas por defecto si no se proporcionan
+        // Ajustamos la ruta para que apunte correctamente a backend/datos/
         const archivoEntrada = rutaEntrada || path.join(__dirname, '../datos/rof.txt');
         const archivoSalida = rutaSalida || path.join(__dirname, '../datos/chunks.json');
+
+        console.log(`📄 Leyendo archivo desde: ${archivoEntrada}`);
+
+        // Verificar si existe el archivo de entrada
+        if (!fs.existsSync(archivoEntrada)) {
+            throw new Error(`No se encontró el archivo de entrada: ${archivoEntrada}. Asegúrate de crear 'rof.txt' en la carpeta 'datos'.`);
+        }
 
         // Leer archivo
         const texto = fs.readFileSync(archivoEntrada, 'utf8');
 
-        // Dividir por líneas en blanco
+        // Dividir por líneas en blanco (párrafos)
         const fragmentos = texto.split(/\n\s*\n/);
 
         let chunks = [];
@@ -57,6 +64,12 @@ export function procesarROF(rutaEntrada = null, rutaSalida = null) {
             });
         }
 
+        // Asegurarse de que el directorio de salida existe
+        const directorioSalida = path.dirname(archivoSalida);
+        if (!fs.existsSync(directorioSalida)) {
+            fs.mkdirSync(directorioSalida, { recursive: true });
+        }
+
         // Guardar en archivo JSON
         fs.writeFileSync(archivoSalida, JSON.stringify(chunks, null, 2), 'utf8');
 
@@ -74,17 +87,17 @@ export function procesarROF(rutaEntrada = null, rutaSalida = null) {
         console.log("✅ ROF procesado exitosamente");
         console.log(`📊 Fragmentos generados: ${chunks.length}`);
         console.log(`📏 Tamaño promedio: ${promedio} caracteres`);
-        console.log(`📄 Primer fragmento: "${chunks[0]?.contenido.substring(0, 50)}..."`);
+        if (chunks.length > 0) {
+            console.log(`📄 Primer fragmento: "${chunks[0].contenido.substring(0, 50)}..."`);
+        }
         console.log(`⚠️ Fragmentos descartados: ${descartados} (muy pequeños)`);
         
         return chunks;
     } catch (error) {
         console.error('❌ Error al procesar ROF:', error.message);
-        throw error;
+        process.exit(1); // Salir con error para detener el flujo de npm run ingesta
     }
 }
 
-// Ejecutar si se llama directamente
-if (import.meta.url === `file://${process.argv[1]}`) {
-    procesarROF();
-}
+// Ejecutar directamente
+procesarROF();
