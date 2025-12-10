@@ -10,7 +10,7 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | :--- | :--- | :--- | :--- | :--- |
 | **1.1** | **🏗 Inicialización del proyecto** | |  | |
 | 1.1.1 | Crear carpeta del proyecto: `chatbot-rag-[tu-nombre-iniciales]` | [x] | Mario | |
-| 1.1.2 | Inicializar repositorio Git: `git init` | ☐ | Mario | |
+| 1.1.2 | Inicializar repositorio Git: `git init` | [x] | Mario | |
 | 1.1.3 | Crear rama de trabajo: `git checkout -b hito2/rag-embeddings` | [x] | Mario | |
 | **1.2** | **📦 Instalación de dependencias** | | | |
 | 1.2.1 | Crear `package.json`: `npm init -y` | [x] | Mario | |
@@ -18,12 +18,12 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | 1.2.3 | Instalar dependencias de desarrollo: `npm install --save-dev nodemon` | [x] | Mario | |
 | **1.3** | **⚙ Configuración de package.json** | | | |
 | 1.3.1 | Configurar como ESM: `"type": "module"` | [x] | Mario | |
-| 1.3.2 | Añadir script: `"procesar"` | ☐ | | |
-| 1.3.3 | Añadir script: `"embeddings"` | ☐ | | |
-| 1.3.4 | Añadir script: `"cargar-bd"` | ☐ | | |
-| 1.3.5 | Añadir script: `"ingesta"` | ☐ | | |
-| 1.3.6 | Añadir script: `"test-busqueda"` | ☐ | | |
-| 1.3.7 | Añadir script: `"dev"` | ☐ | | |
+| 1.3.2 | Añadir script: `"procesar"` | [x] | Mario  | |
+| 1.3.3 | Añadir script: `"embeddings"` | [x] | Mario | |
+| 1.3.4 | Añadir script: `"cargar-bd"` | [x] | Mario | |
+| 1.3.5 | Añadir script: `"ingesta"` | [x] | Mario | |
+| 1.3.6 | Añadir script: `"test-busqueda"` | [x] | Mario | |
+| 1.3.7 | Añadir script: `"dev"` | [x] | Mario | |
 | **1.4** | **📂 Estructura de carpetas** | |  | |
 | 1.4.1 | Crear carpeta `datos/` | [x] | Mario | |
 | 1.4.2 | Crear carpeta `scripts/` | [x] | Mario | |
@@ -44,20 +44,20 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | # | Tarea | Archivo | Estado | Asignado a | Observaciones |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **2.1** | **📄 `scripts/procesar_rof.js`** | `procesar_rof.js` | |  | |
-| 2.1.1 | Implementar `procesarROF()`: Leer `datos/rof.txt` | ☐ | Adam | |
-| 2.1.2 | Dividir texto en párrafos (`\n\n`) | ☐ | Adam | |
-| 2.1.3 | Filtrar fragmentos menores a 100 caracteres | ☐ | Adam | |
-| 2.1.4 | Crear array con estructura: `{id, contenido, fuente, pagina}` | ☐ | Adam | |
-| 2.1.5 | Guardar resultado en `datos/chunks.json` | ☐ | Adam | |
-| 2.1.6 | Mostrar estadísticas en consola | ☐ | Adam | |
-| 2.1.7 | Probar ejecución: `npm run procesar` | ☐ | Adam | |
+| 2.1.1 | Implementar `procesarROF()`: Leer `datos/rof.txt` | [x] | Adam | |
+| 2.1.2 | Dividir texto en párrafos (`\n\n`) | [x] | Adam | |
+| 2.1.3 | Filtrar fragmentos menores a 100 caracteres | [x] | Adam | |
+| 2.1.4 | Crear array con estructura: `{id, contenido, fuente, pagina}` | [x] | Adam | |
+| 2.1.5 | Guardar resultado en `datos/chunks.json` | [x] | Adam | |
+| 2.1.6 | Mostrar estadísticas en consola | [x] | Adam | |
+| 2.1.7 | Probar ejecución: `npm run procesar` | [x] | Adam | |
 | **2.2** | **🔧 `scripts/generar_embeddings.js`** | `generar_embeddings.js` | |  | |
-| 2.2.1 | Implementar `generarEmbedding(texto)` (POST a Ollama) | ☐ | Mario | |
-| 2.2.2 | Implementar `procesarTodos()`: Leer `datos/chunks.json` | ☐ | Mario | |
-| 2.2.3 | Generar embedding por cada chunk | ☐ | Mario | |
-| 2.2.4 | Guardar en `datos/embeddings.json` | ☐ | Mario | |
-| 2.2.5 | Mostrar estadísticas (progreso, tiempo, dimensión) | ☐ | Mario | |
-| 2.2.6 | Probar ejecución: `npm run embeddings` | ☐ | Mario | |
+| 2.2.1 | Implementar `generarEmbedding(texto)` (POST a Ollama) | [x] | Mario | |
+| 2.2.2 | Implementar `procesarTodos()`: Leer `datos/chunks.json` | [x] | Mario | |
+| 2.2.3 | Generar embedding por cada chunk | [x] | Mario | |
+| 2.2.4 | Guardar en `datos/embeddings.json` | [x] | Mario | |
+| 2.2.5 | Mostrar estadísticas (progreso, tiempo, dimensión) | [x] | Mario | |
+| 2.2.6 | Probar ejecución: `npm run embeddings` | [x] | Mario | |
 | **2.3** | **💾 `scripts/cargar_bd.js`** | `cargar_bd.js` | |  | |
 | 2.3.1 | Implementar `inicializarBD()`: Crear `datos/rof_vectores.db` | ☐ | Ale | |
 | 2.3.2 | Crear tabla `fragmentos` con campos correctos | ☐ | Ale | |

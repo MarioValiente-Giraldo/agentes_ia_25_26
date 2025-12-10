@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  ollama_rag: 
+    image: ollama/ollama 
+    container_name: ollama_rag
+    ports:
+      - "11434:11434"
+      
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: always 
+
+volumes:
+  ollama_data: 
