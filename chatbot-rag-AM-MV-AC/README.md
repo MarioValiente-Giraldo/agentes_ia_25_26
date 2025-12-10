@@ -1,228 +1,343 @@
+# Chatbot RAG con Embeddings 🤖
 
-# 🧠 Chatbot RAG para el ROF del Centro Educativo
+Aplicación full-stack que implementa un sistema RAG (Retrieval Augmented Generation) especializado en consultas sobre el Reglamento de Organización y Funcionamiento (ROF) del centro educativo. Procesa documentos grandes, genera representaciones vectoriales y permite búsquedas semánticas inteligentes.
 
-Este proyecto consiste en el desarrollo de un chatbot especializado en consultas sobre el Reglamento de Organización y Funcionamiento (ROF) de un centro educativo.
-Para lograr respuestas precisas y basadas en el documento oficial, se implementa un sistema RAG (Retrieval-Augmented Generation). 
+**Proyecto:** chatbot-rag-AM-MV-AC  
+**Curso:** Desarrollo Web en entorno Cliente - 2º DAW  
+**Centro:** IES HLanz
 
----
+## 🚀 Características
 
-## 1) Descripción del proyecto
+- **Procesamiento inteligente de documentos**: División automática del ROF en fragmentos semánticamente coherentes
+- **Generación de embeddings**: Vectorización de texto usando Ollama con modelo nomic-embed-text
+- **Base de datos vectorial**: Almacenamiento persistente en SQLite3 para búsquedas rápidas
+- **Búsqueda semántica**: Sistema de similitud de coseno para encontrar información relevante
+- **Arquitectura modular**: Scripts reutilizables para cada fase del proceso
+- **Dockerización completa**: Servicios orquestados con Docker Compose
+- **Pipeline automatizado**: Comando único para ejecutar todo el flujo de ingesta
 
-### 🔍¿Qué es RAG?
+## 💻 Tecnologías
 
-- Un RAG (Retrieval-Augmented Generation) es una técnica que combina:
-    - **Recuperación de información** (search) mediante embeddings y vectores.
-    - **Generación aumentada de respuestas** usando modelos de IA.
-- Cuando un usuario pregunta algo, el sistema:
-    1. Busca fragmentos del ROF relevantes (usando similitud vectorial).
-    2. Pasa esos fragmentos al modelo generativo.
-    3. Produce una respuesta precisa y fundamentada.
+- **Backend:** Node.js (ES Modules), Express
+- **Base de datos:** SQLite3 (better-sqlite3)
+- **IA:** Ollama (nomic-embed-text, mistral)
+- **Frontend:** HTML5, CSS3, JavaScript vanilla
+- **Containerización:** Docker, Docker Compose
+- **Testing:** Jest
 
+## 📁 Estructura del Proyecto
 
+```
+chatbot-rag-AM-MV-AC/
+├── backend/
+│   └── datos/
+│       ├── .gitkeep
+│       ├── chunks.json          # Fragmentos procesados
+│       ├── embeddings.json      # Fragmentos con vectores
+│       ├── rof_vectores.db      # Base de datos SQLite
+│       └── rof.txt              # ROF original (entrada)
+├── scripts/
+│   ├── cargar_bd.js             # Fase 3: Carga a base de datos
+│   ├── generar_embeddings.js    # Fase 2: Generación de vectores
+│   ├── procesar_rof.js          # Fase 1: División en fragmentos
+│   └── test_busqueda.js         # Fase 4: Pruebas de búsqueda
+├── tests/
+│   ├── generar_embedding.test.js 
+│   ├── procesar_rof.test.js
+│   └── test_busqueda.test.js
+├── docs/
+│   ├── checklist.md 
+├── frontend/
+├── .env
+├── .env.example
+├── .gitignore
+├── docker-compose.yml           # Orquestación de servicios
+├── package-lock.json
+├── package.json
+├── README.md
+├── server.js                    # Servidor Express principal
+└── validacion.http              # Tests HTTP con REST Client
+```
 
-### 🧩 ¿Qué es un embedding?
+## 🛠️ Instalación
 
-Un **embedding** es una representación numérica de un texto en forma de vector.
-Permite medir similitud entre textos:
+### Requisitos previos
 
-- Textos similares → vectores cercanos
-- Búsqueda → similitud de coseno
-
-Los embeddings hacen posible el sistema RAG porque permiten encontrar rápidamente qué partes del ROF son relevantes para cada pregunta.
-
-
-### 🗂️ Flujo de ingesta de datos
-
-El proceso de ingesta transforma el ROF en un formato utilizable para RAG:
-
-**1. Procesar** → El ROF se divide en fragmentos (“chunks”).
-**2. Embeddings** → Cada fragmento se convierte en un vector numérico.
-**3. Cargar-BD** → Los vectores y chunks se insertan en una base de datos.
-**4. Búsqueda** → Se utiliza similitud de coseno para localizar fragmentos relevantes.
-
----
-
-## 2) Requisitos
-
-### 🧰 Software necesario
-
-- Node.js v20+
-- npm 10+
-- Docker 24+
-- Docker Compose V2
+- Node.js v20+ y npm 10+
+- Docker 24+ y Docker Compose V2
+- Ollama instalado localmente
 - Git
-- Visual Studio Code
-- Extensión REST Client para VS Code (para tests)
 
-### 🦙 Ollama
+### Pasos de instalación
 
-- Instalado localmente
-- Modelos necesarios:
+1. **Clona el repositorio**
+   ```bash
+   git clone --no-checkout git@github.com:MarioValiente-Giraldo/agentes_ia_25_26.git
+   cd chatbot-rag-AM-MV-AC
+   git sparse-checkout init --cone
+   git sparse-checkout set chatbot-rag-AM-MV-AC
+   git checkout
+   ```
 
-```bash
-ollama pull nomic-embed-text
-ollama pull mistral
-```
+2. **Instala las dependencias**
+   ```bash
+   npm install
+   ```
 
-- Ollama debe responder en:
+3. **Configura las variables de entorno**
+   - Copia el archivo `.env.example` a `.env`
+   ```bash
+   cp .env.example .env
+   ```
+   - Ajusta las variables según tu configuración:
+   ```env
+   # Ollama
+   OLLAMA_URL=http://localhost:11434
+   OLLAMA_MODEL_EMBEDDINGS=nomic-embed-text
+   OLLAMA_MODEL_LLM=mistral
+   
+   # Base de datos
+   DB_PATH=./backend/datos/rof_vectores.db
+   CHUNKS_PATH=./backend/datos/chunks.json
+   OUTPUT_PATH=./backend/datos/embeddings.json
+   JSON_PATH=./backend/datos/embeddings.json
+   
+   # Node
+   NODE_ENV=development
+   ```
 
-```bash
-http://localhost:11434
-```
+4. **Inicia Ollama con Docker**
+   ```bash
+   docker compose up -d
+   ```
 
-### 📄 Documentos requeridos
+5. **Descarga los modelos de IA**
+   ```bash
+   docker exec ollama_rag ollama pull nomic-embed-text
+   docker exec ollama_rag ollama pull mistral
+   ```
 
-- ROF del centro educativo en formato texto plano (.txt)
+6. **Añade tu archivo ROF**
+   - Coloca el archivo `rof.txt` en la carpeta `backend/datos/`
+   - Asegúrate de que tenga al menos 5000 caracteres
 
----
+## 🎯 Uso
 
-## 3) Instalación
+### Pipeline completo de ingesta
 
-1. Clonar respositorio
-
-```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
-```
-
-2. Instalar dependencias
-
-```bash
-npm install
-```
-
-3. Descargar archivo del ROF
-
-- Colocarlo en `/data/rof.txt`
-
-4. Configurar variables de entorno
-
-- Crear `.env`
-
-```bash
-OLLAMA_URL=http://localhost:11434
-DB_PATH=./database.sqlite3
-```
-
----
-
-## 4) Ejecución completa del proceso
-
-- Ejecuta el pipeline completo:
+Ejecuta todo el proceso de ingesta con un solo comando:
 
 ```bash
 npm run ingesta
 ```
 
----
+Este comando ejecuta en orden:
+1. Procesamiento del ROF (trocear en fragmentos)
+2. Generación de embeddings
+3. Carga a base de datos
 
-## 5) Scripts individuales
+### Scripts individuales
 
-**1️⃣ Procesar el ROF**
-
+#### 1. Procesar ROF
 ```bash
 npm run procesar
 ```
+Lee el ROF desde `backend/datos/`, lo divide en fragmentos coherentes y guarda el resultado en `backend/datos/chunks.json`.
 
-**2️⃣ Generar embeddings**
+**Salida esperada:**
+```
+✅ ROF procesado exitosamente
+📊 Fragmentos generados: 87
+📏 Tamaño promedio: 342 caracteres
+📄 Primer fragmento: "El Reglamento de Organización..."
+⚠️ Fragmentos descartados: 5 (muy pequeños)
+```
 
+#### 2. Generar embeddings
 ```bash
 npm run embeddings
 ```
+Genera vectores numéricos para cada fragmento usando Ollama.
 
-**3️⃣ Cargar datos en la base de datos**
+**Salida esperada:**
+```
+🔄 Conectando a Ollama en http://localhost:11434...
+✅ Ollama disponible
+📝 Cargados 87 fragmentos de backend/datos/chunks.json
+Generando embeddings:
+[████████████████████] 87/87 100%
+✅ Embeddings generados exitosamente
+⏱ Tiempo: 156 segundos
+💾 Guardados en backend/datos/embeddings.json
+📊 Dimensión de cada embedding: 768
+```
 
+#### 3. Cargar a base de datos
 ```bash
 npm run cargar-bd
 ```
+Almacena los embeddings en una base de datos SQLite3.
 
-**4️⃣ Test de búsqueda semántica**
+**Salida esperada:**
+```
+🗄 Inicializando base de datos...
+✅ Tabla 'fragmentos' creada
+📥 Insertando 87 fragmentos...
+[████████████████████] 87/87 100%
+✅ Base de datos cargada exitosamente
+📊 Fragmentos en BD: 87
+💾 Tamaño de archivo: 3.2 MB
+✅ Integridad verificada
+```
 
+#### 4. Probar búsqueda semántica
 ```bash
 npm run test-busqueda
 ```
+Realiza búsquedas de prueba para validar el sistema.
 
----
-
-## 6) Estructura de datos
-
-📌 `chunks.json`
-- Contiene los fragmentos procesados:
-```json
-{
-  "id": 1,
-  "texto": "Contenido del fragmento...",
-  "longitud": 250
-}
+**Salida esperada:**
+```
+🔍 Buscando fragmentos similares a: "¿Cuál es el horario de entrada?"
+📍 Resultados (similitud):
+1. [0.87] "El horario de entrada es de 08:00 a 08:30..."
+2. [0.72] "Los estudiantes deben llegar puntualmente..."
+3. [0.65] "El retraso se justifica solamente en caso de..."
 ```
 
-📌 `embeddings.json`
-- Vectores generados por Ollama:
-```json
-{
-  "id": 1,
-  "vector": [0.12, -0.80, 0.44, ...]
-}
+### Modo desarrollo
+```bash
+npm run dev
+```
+Ejecuta `test_busqueda.js` con auto-recarga al detectar cambios.
+
+## 🧪 Testing
+
+Ejecuta los tests con:
+```bash
+npm test
 ```
 
-📌 Tabla `fragmentos` en SQLite3
-- Contiene los fragmentos procesados:
-    - `id`
-    - `texto`
-    - `vector` (JSON / BLOB)
-    - `longitud`
+Los tests cubren:
+- Procesamiento correcto de fragmentos
+- Generación válida de embeddings
+- Carga exitosa en base de datos
+- Búsquedas semánticas funcionales
 
-    La base de datos soporta búsquedas mediante similitud de coseno.
+## 🔍 ¿Qué es RAG?
 
---- 
+**RAG (Retrieval Augmented Generation)** es una técnica que combina:
 
-##  7) ¿Qué es un embedding? 
+1. **Retrieval (Recuperación)**: Busca información relevante en una base de datos
+2. **Augmented (Aumentada)**: Enriquece el contexto del modelo de IA
+3. **Generation (Generación)**: Genera respuestas basadas en datos reales
 
-Un **embedding** es una forma de convertir texto en un vector numérico que captura su significado.
-Gracias a esto podemos:
-- Comparar textos por similitud
-- Hacer RAG con documentos largos
-- Construir buscadores semánticos
-- Evitar búsquedas literales por palabras clave
+### ¿Qué es un embedding?
 
-🔸Fundamentos:
-- Representación vectorial del significado
-- Vectores cercanos → textos parecidos
-- Similitud de coseno → métrica estándar
+Un **embedding** es una representación vectorial de texto que:
+- Convierte palabras/frases en números (vectores de ~768 dimensiones)
+- Textos con significado similar tienen vectores cercanos
+- Permite búsquedas semánticas usando similitud de coseno
 
----
+**Ejemplo:**
+```
+"horario de entrada" → [0.23, -0.45, 0.67, ..., 0.12]
+"hora de llegada"    → [0.25, -0.43, 0.65, ..., 0.14]
+                          ↓ similitud alta (vectores cercanos)
+```
 
-## 8) Decisiones de diseño
+## 📊 Estructura de Datos
 
-### 🗄️ ¿Por qué SQLite3?
+### chunks.json
+```json
+[
+  {
+    "id": 1,
+    "contenido": "El Reglamento de Organización...",
+    "fuente": "rof.txt",
+    "pagina": null
+  }
+]
+```
 
-- Ligero y portable
-- No requiere servidor
-- Fácil de consultar desde Node.js
-- Ideal para prototipos educativos
-- Suficiente para almacenar cientos o miles de vectores
+### embeddings.json
+```json
+[
+  {
+    "id": 1,
+    "embedding": [0.23, -0.45, 0.67, ..., 0.12]
+  }
+]
+```
 
-### 🧠 ¿Por qué `nomic-embed-text`?
+### Tabla `fragmentos` en BD
+```sql
+CREATE TABLE fragmentos (
+    id INTEGER PRIMARY KEY,
+    contenido TEXT NOT NULL,
+    embedding TEXT NOT NULL,  -- JSON stringificado
+    fuente TEXT,
+    pagina INTEGER,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+```
 
-- Optimizado para crear embeddings
-- Excelente calidad semántica
-- Ligero y rápido en CPU
-- Disponible directamente en Ollama
+## 🐳 Docker
 
-### ✂️ Tamaño mínimo de fragmentos (100 caracteres)
+### Levantar servicios
+```bash
+docker compose up -d
+```
 
-- Evita trozos demasiado pequeños
-- Asegura coherencia semántica
-- Reduce ruido en los embeddings
+### Verificar Ollama
+```bash
+curl http://localhost:11434/api/tags
+```
 
----
+### Detener servicios
+```bash
+docker compose down
+```
 
-## 9) Próximas fases
+## 🎨 Decisiones de Diseño
 
-- Sistema de consultas (próximo hito)
-- Backend en Node.js para:
-  - Recibir preguntas
-  - Buscar fragmentos relevantes en la BD
-  - Invocar un LLM (Mstral) para generar respuestas fundamentadas
-- Frontend web para preguntar al chatbot
-- Contenerización completa con Docker Compose (backend, frontend, ollama)
+### ¿Por qué SQLite3?
+- Ligero y sin necesidad de servidor
+- Ideal para aplicaciones locales
+- Excelente rendimiento para vectores
+
+### ¿Por qué nomic-embed-text?
+- Modelo optimizado para embeddings de texto
+- Tamaño razonable (~274MB)
+- Buena calidad de vectorización
+
+### Tamaño mínimo de fragmentos (100 caracteres)
+- Evita fragmentos sin contexto suficiente
+- Mejora la calidad de las búsquedas
+- Reduce ruido en la base de datos
+
+## 📸 Capturas de Pantalla
+
+(Añadir capturas cuando esté el frontend completo)
+
+## 🤝 Trabajo en Equipo
+
+Este proyecto fue desarrollado en grupo:
+
+
+## 👨‍💻 Autores
+
+**[Nombres de los estudiantes]**
+- GitHub: [@usuario1](https://github.com/usuario1)
+- GitHub: [@usuario2](https://github.com/usuario2)
+- GitHub: [@usuario3](https://github.com/usuario3)
+- GitHub: [@usuario4](https://github.com/usuario4)
+
+
+## 📝 Licencia
+Este proyecto es parte del curso de Desarrollo Web en entorno Cliente - 2º DAW en IES HLanz.
+
+## 🙏 Agradecimientos
+
+- Profesor Isaías FL por la guía y especificaciones del proyecto
+- IES HLanz por proporcionar el ROF
