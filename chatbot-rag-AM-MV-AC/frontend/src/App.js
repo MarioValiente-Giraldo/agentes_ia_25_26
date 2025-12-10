@@ -1,15 +1,15 @@
 export function App() {
   // ---------------------------------------------------------
-  // 1. Contenedor Principal
+  // 1. Contenedor Principal (TU DISEÑO ORIGINAL)
   // ---------------------------------------------------------
   const container = document.createElement('div');
-  container.className = 'flex h-screen w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900';
+  container.className = 'flex h-screen w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden font-sans';
 
   // ---------------------------------------------------------
-  // 2. Sidebar
+  // 2. Sidebar (TU DISEÑO ORIGINAL)
   // ---------------------------------------------------------
   const sidebar = document.createElement('div');
-  sidebar.className = 'w-64 bg-slate-800/50 backdrop-blur-xl border-r border-slate-700/50 flex flex-col';
+  sidebar.className = 'w-64 bg-slate-800/50 backdrop-blur-xl border-r border-slate-700/50 flex flex-col flex-shrink-0';
 
   const sidebarHeader = document.createElement('div');
   sidebarHeader.className = 'p-6 border-b border-slate-700/50';
@@ -77,11 +77,11 @@ export function App() {
   // 3. Área Principal del Chat
   // ---------------------------------------------------------
   const mainArea = document.createElement('div');
-  mainArea.className = 'flex-1 flex flex-col';
+  mainArea.className = 'flex-1 flex flex-col relative';
 
   // Header del chat
   const chatHeader = document.createElement('div');
-  chatHeader.className = 'bg-slate-800/30 backdrop-blur-xl border-b border-slate-700/50 p-4 flex items-center justify-between';
+  chatHeader.className = 'bg-slate-800/30 backdrop-blur-xl border-b border-slate-700/50 p-4 flex items-center justify-between z-10';
 
   const headerLeft = document.createElement('div');
   headerLeft.className = 'flex items-center gap-3';
@@ -114,22 +114,23 @@ export function App() {
   chatHeader.appendChild(headerLeft);
 
   // ---------------------------------------------------------
-  // 4. Área de mensajes (CENTRADA)
+  // 4. Área de mensajes (MODIFICADO: Ajuste de scroll y layout)
   // ---------------------------------------------------------
   const messagesWrapper = document.createElement('div');
-  messagesWrapper.className = 'flex-1 overflow-y-auto p-6 flex justify-center';
+  // Cambiado 'flex justify-center' por 'flex flex-col items-center' para evitar bugs de scroll
+  messagesWrapper.className = 'flex-1 overflow-y-auto p-6 flex flex-col items-center scroll-smooth';
   messagesWrapper.style.backgroundImage = 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)';
 
   const messages = document.createElement('div');
-  messages.className = 'w-full max-w-4xl flex flex-col gap-4';
+  messages.className = 'w-full max-w-4xl flex flex-col gap-6'; // Aumenté el gap a 6 para mejor separación
 
   messagesWrapper.appendChild(messages);
 
   // ---------------------------------------------------------
-  // 5. Formulario (CENTRADO)
+  // 5. Formulario (TU DISEÑO ORIGINAL)
   // ---------------------------------------------------------
   const formContainer = document.createElement('div');
-  formContainer.className = 'p-6 bg-slate-800/30 backdrop-blur-xl border-t border-slate-700/50 flex justify-center';
+  formContainer.className = 'p-6 bg-slate-800/30 backdrop-blur-xl border-t border-slate-700/50 flex justify-center z-10';
 
   const form = document.createElement('form');
   form.className = 'w-full max-w-4xl flex gap-3';
@@ -179,94 +180,106 @@ export function App() {
   container.appendChild(mainArea);
 
   // ---------------------------------------------------------
-  // 6. Función agregar mensaje con fragmentos
+  // 6. Función agregar mensaje (MODIFICADO: ESTILO Y ESPACIADO)
   // ---------------------------------------------------------
   function addMessage(text, sender = 'user', fragmentos = null) {
     const wrapper = document.createElement('div');
-    wrapper.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
+    // Animación y alineación
+    wrapper.className = `flex w-full ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-[fadeIn_0.3s_ease-out]`;
 
-    const msgContainer = document.createElement('div');
-    msgContainer.className = 'flex flex-col gap-2 max-w-3xl w-full';
-
-    const mainContent = document.createElement('div');
-    mainContent.className = 'flex items-start gap-3';
+    // Contenedor interno para agrupar avatar (si es bot) y mensaje
+    const msgGroup = document.createElement('div');
+    msgGroup.className = `flex gap-3 max-w-[85%] ${sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`;
 
     if (sender === 'bot') {
       const botAvatar = document.createElement('div');
-      botAvatar.className = 'w-8 h-8 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-full flex items-center justify-center text-sm flex-shrink-0';
+      botAvatar.className = 'w-8 h-8 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-1 shadow-lg';
       botAvatar.textContent = '🤖';
-      mainContent.appendChild(botAvatar);
+      msgGroup.appendChild(botAvatar);
     }
+
+    // Contenedor vertical para el texto y luego los fragmentos
+    const contentColumn = document.createElement('div');
+    contentColumn.className = 'flex flex-col gap-2';
 
     const msg = document.createElement('div');
     msg.textContent = text;
-
+    
+    // MEJORAS DE ESTILO APLICADAS AQUÍ:
+    // 1. whitespace-pre-wrap: Respeta los saltos de línea de la IA.
+    // 2. leading-relaxed: Aumenta el interlineado para leer mejor.
+    // 3. shadow-md: Sombra un poco más suave.
     if (sender === 'user') {
-      msg.className = 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-6 py-3 rounded-2xl rounded-tr-md shadow-lg break-words';
+      msg.className = 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-6 py-3.5 rounded-2xl rounded-tr-sm shadow-md break-words whitespace-pre-wrap leading-relaxed text-sm md:text-base';
     } else {
-      msg.className = 'bg-slate-700/50 backdrop-blur-sm text-white border border-slate-600/50 px-6 py-3 rounded-2xl rounded-tl-md shadow-lg break-words';
+      msg.className = 'bg-slate-700/50 backdrop-blur-sm text-slate-100 border border-slate-600/50 px-6 py-3.5 rounded-2xl rounded-tl-sm shadow-md break-words whitespace-pre-wrap leading-relaxed text-sm md:text-base';
     }
 
-    mainContent.appendChild(msg);
-    msgContainer.appendChild(mainContent);
+    contentColumn.appendChild(msg);
 
-    // Mostrar fragmentos si existen
+    // Mostrar fragmentos si existen (Estilo mejorado pero manteniendo tu lógica de colores)
     if (fragmentos && fragmentos.length > 0) {
       const fragmentosContainer = document.createElement('div');
-      fragmentosContainer.className = 'ml-11 space-y-2';
+      fragmentosContainer.className = 'mt-2 space-y-2';
 
       const fragmentosTitle = document.createElement('div');
-      fragmentosTitle.className = 'text-slate-400 text-xs font-medium mb-2';
-      fragmentosTitle.textContent = '📚 Fragmentos encontrados (por similitud):';
+      fragmentosTitle.className = 'text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-2';
+      fragmentosTitle.innerHTML = '<span>📚 Referencias encontradas</span><div class="h-px bg-slate-700 flex-1"></div>';
       fragmentosContainer.appendChild(fragmentosTitle);
 
       fragmentos.forEach((frag, i) => {
         const fragCard = document.createElement('div');
-        fragCard.className = 'bg-slate-800/50 border border-slate-600/30 rounded-lg p-3 text-sm';
+        fragCard.className = 'bg-slate-800/80 border border-slate-600/30 rounded-lg p-3 text-sm hover:bg-slate-800 transition-colors';
 
         const fragHeader = document.createElement('div');
         fragHeader.className = 'flex items-center gap-2 mb-2';
 
         const similitudBadge = document.createElement('span');
         const similitudNum = parseFloat(frag.similitud);
-        const colorClass = similitudNum > 0.7 ? 'bg-green-500/20 text-green-400' : 
-                          similitudNum > 0.5 ? 'bg-yellow-500/20 text-yellow-400' : 
-                          'bg-orange-500/20 text-orange-400';
+        // Tu lógica de colores original
+        const colorClass = similitudNum > 0.7 ? 'bg-green-500/20 text-green-400 border border-green-500/20' : 
+                           similitudNum > 0.5 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/20' : 
+                           'bg-orange-500/20 text-orange-400 border border-orange-500/20';
         
-        similitudBadge.className = `px-2 py-1 rounded-full text-xs font-medium ${colorClass}`;
-        similitudBadge.textContent = `${(similitudNum * 100).toFixed(1)}% similar`;
+        similitudBadge.className = `px-2 py-0.5 rounded text-xs font-medium ${colorClass}`;
+        similitudBadge.textContent = `${(similitudNum * 100).toFixed(0)}% coincidencia`;
 
         const fragNumber = document.createElement('span');
-        fragNumber.className = 'text-slate-500 text-xs';
-        fragNumber.textContent = `Fragmento ${i + 1}`;
+        fragNumber.className = 'text-slate-500 text-xs font-mono';
+        fragNumber.textContent = `REF #${i + 1}`;
 
         fragHeader.appendChild(similitudBadge);
         fragHeader.appendChild(fragNumber);
 
         const fragContent = document.createElement('div');
-        fragContent.className = 'text-slate-300 text-xs leading-relaxed';
-        fragContent.textContent = frag.contenido;
+        fragContent.className = 'text-slate-300 text-xs leading-relaxed italic';
+        fragContent.textContent = `"${frag.contenido}"`;
 
         fragCard.appendChild(fragHeader);
         fragCard.appendChild(fragContent);
         fragmentosContainer.appendChild(fragCard);
       });
 
-      msgContainer.appendChild(fragmentosContainer);
+      contentColumn.appendChild(fragmentosContainer);
     }
 
-    wrapper.appendChild(msgContainer);
+    msgGroup.appendChild(contentColumn);
+    wrapper.appendChild(msgGroup);
     messages.appendChild(wrapper);
 
+    // Auto-scroll mejorado
     setTimeout(() => {
-      messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
+        messagesWrapper.scrollTo({
+            top: messagesWrapper.scrollHeight,
+            behavior: 'smooth'
+        });
     }, 50);
 
     return wrapper;
   }
 
   // ---------------------------------------------------------
-  // 7. Verificar estado del servidor
+  // 7. Verificar estado del servidor (TU CÓDIGO ORIGINAL)
   // ---------------------------------------------------------
   async function verificarEstado() {
     try {
@@ -277,7 +290,7 @@ export function App() {
       if (data.status === 'ok') {
         statusIndicator.innerHTML = `
           <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-          En línea (${data.database.fragmentos} fragmentos)
+          En línea
         `;
       }
     } catch (e) {
@@ -290,7 +303,7 @@ export function App() {
   }
 
   // ---------------------------------------------------------
-  // 8. Enviar pregunta al backend
+  // 8. Enviar pregunta al backend (TU CÓDIGO ORIGINAL)
   // ---------------------------------------------------------
   async function consultarBackend(prompt) {
     try {
@@ -319,7 +332,7 @@ export function App() {
   }
 
   // ---------------------------------------------------------
-  // 9. Submit del chat
+  // 9. Submit del chat (TU CÓDIGO ORIGINAL CON PEQUEÑO AJUSTE UI)
   // ---------------------------------------------------------
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -331,6 +344,7 @@ export function App() {
     input.value = "";
     input.disabled = true;
     button.disabled = true;
+    button.classList.add('opacity-50', 'cursor-not-allowed');
 
     // mensaje de "pensando"
     const thinkingWrapper = addMessage("🔍 Buscando en el ROF y generando respuesta...", "bot");
@@ -344,6 +358,7 @@ export function App() {
 
     input.disabled = false;
     button.disabled = false;
+    button.classList.remove('opacity-50', 'cursor-not-allowed');
     input.focus();
   });
 
@@ -352,6 +367,16 @@ export function App() {
     messages.innerHTML = '';
     setTimeout(() => addMessage('¡Hola! Soy tu asistente especializado en el ROF del centro. Puedo responder preguntas sobre:\n\n📋 Reglamentos y normas\n⏰ Horarios\n👔 Uniformes\n📚 Procedimientos\n\n¿Qué te gustaría saber?', 'bot'), 100);
   });
+
+  // Estilo para la animación fade-in por si no está en tu tailwind config
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
 
   // Inicializar
   verificarEstado();
