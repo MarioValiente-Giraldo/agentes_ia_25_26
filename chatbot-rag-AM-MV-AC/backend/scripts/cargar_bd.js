@@ -29,13 +29,13 @@ function inicializarBD() {
     console.log('🗄 Inicializando base de datos...');
     const db = new Database(DB_PATH); // Abrir o crear la base de datos
     db.exec(`
-        CREATE TABLE IF NOT EXISTS fragmentos ( 
-            id INTEGER PRIMARY KEY, // ID autoincremental
-            contenido TEXT NOT NULL, // Texto del fragmento
-            embedding TEXT NOT NULL, // Embedding en formato JSON
-            fuente TEXT, // Fuente del fragmento (opcional)
-            pagina INTEGER, // Número de página (opcional)
-            creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP // Fecha de creación automática
+            CREATE TABLE IF NOT EXISTS fragmentos (
+                id INTEGER PRIMARY KEY,
+                contenido TEXT NOT NULL,
+                embedding TEXT NOT NULL,
+                fuente TEXT,
+                pagina INTEGER,
+                creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `);
     console.log("✅ Tabla 'fragmentos' creada");
