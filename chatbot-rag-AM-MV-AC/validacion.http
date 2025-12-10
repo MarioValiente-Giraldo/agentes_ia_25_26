@@ -1,0 +1,27 @@
+### 1. 🐳 Verificar Estado del Servicio Ollama (Fase 1: Infraestructura)
+# Objetivo: Confirmar que el contenedor 'ollama_rag' está corriendo y accesible.
+# Esperado: Código 200 OK y una lista de modelos que incluya 'nomic-embed-text' y 'mistral'.
+GET http://localhost:11435/api/tags
+Accept: application/json
+
+### 2. 📝 Probar Generación de Embedding (Funcionalidad Clave de la Fase 1)
+# Objetivo: Verificar que el modelo 'nomic-embed-text' pueda generar un vector numérico.
+# Esperado: Código 200 OK y un array largo de números bajo la clave 'embedding'.
+POST http://localhost:11435/api/embeddings
+Content-Type: application/json
+
+{
+    "model": "nomic-embed-text",
+    "prompt": "Prueba de vectorizacion para la busqueda semantica"
+}
+
+### 3. ⚙️ Verificar Conexión al Backend Express (Fase 2: Simulación de Frontend)
+# Objetivo: Comprobar que tu servidor Express esté escuchando en el puerto 3002 y reciba correctamente el JSON del frontend.
+# NOTA: Debes tener tu servidor Express corriendo (npm run start o node server.js).
+# Esperado: Código 200 OK y la respuesta simulada del servidor Express (si usaste el server.js mínimo).
+POST http://localhost:3002/api/consulta
+Content-Type: application/json
+
+{
+    "prompt": "¿Cuáles son las horas de apertura y cierre del centro?"
+}
