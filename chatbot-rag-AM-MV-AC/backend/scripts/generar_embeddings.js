@@ -12,11 +12,13 @@ const OUTPUT_PATH = process.env.OUTPUT_PATH;
 /**
  * @name comprobarConexionOllama
  * Esta función comprueba si existe conexión con el servicio Ollama
- * en la URL definida en las variables de entorno.
+ * usando el endpoint de embeddings que es compatible con el modelo.
  */
 async function comprobarConexionOllama(){
     try{
-        const response = await fetch(`${OLLAMA_URL}/api/generate`,{
+        // CORRECCIÓN: Usamos /api/embeddings en lugar de /api/generate
+        // porque 'nomic-embed-text' NO es un modelo generativo.
+        const response = await fetch(`${OLLAMA_URL}/api/embeddings`,{
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -24,11 +26,18 @@ async function comprobarConexionOllama(){
                 prompt: "ping"
             })
         });
-        if(!response.ok)throw new Error();
+        
+        if(!response.ok) {
+            // Si falla, intentamos ver el error específico
+            const errText = await response.text(); 
+            throw new Error(`Ollama respondió con error: ${response.status} - ${errText}`);
+        }
 
         console.log("✅ Conectado a Ollama");
     }catch(error){
-        console.log("\n❌ No se pudo conectar a Ollama. ¿Está ejecutándose?");
+        console.error("\n❌ Error de conexión con Ollama:", error.message);
+        console.log("👉 Asegúrate de ejecutar: 'ollama pull nomic-embed-text'");
+        process.exit(1); 
     }
 }
 
@@ -36,7 +45,7 @@ async function comprobarConexionOllama(){
  * @name generarEmbedding
  * Genera el embedding vectorial (representación numérica) para un fragmento de texto dado.
  * Utiliza el endpoint /api/embeddings de Ollama con el modelo nomic-embed-text.
- * * @param {string} text - El fragmento de texto a convertir en vector.
+ * @param {string} text - El fragmento de texto a convertir en vector.
  * @returns {number[] | null} Un array de números que representa el vector, o null si hay un error.
  */
 async function generarEmbedding(text){
@@ -72,6 +81,11 @@ async function procesarTodos(){
     await comprobarConexionOllama();
     
     // Leemos los chunks
+    if (!fs.existsSync(CHUNKS_PATH)) {
+        console.error(`❌ No se encontró el archivo de chunks en: ${CHUNKS_PATH}`);
+        process.exit(1);
+    }
+
     console.log(`📝 Cargando fragmentos desde ${CHUNKS_PATH} ...`);
     const chunks = JSON.parse(fs.readFileSync(CHUNKS_PATH, "utf-8"));
     const totalChunks = chunks.length;
@@ -93,23 +107,27 @@ async function procesarTodos(){
         const barra = "█".repeat(progreso) + " ".repeat(30 - progreso);
         process.stdout.write(`\r[${barra}] ${i + 1}/${totalChunks}`);
 
-        // Obtenemos el vector a partir del embedding del chunk. Usa 'contenido' según procesar_rof.js
-        const vector = await generarEmbedding(chunk.contenido || chunk.texto || chunk.chunk || "");
+        // Obtenemos el vector a partir del embedding del chunk
+        // Intenta obtener el texto de 'contenido', 'texto' o 'chunk'
+        const textoAProcesar = chunk.contenido || chunk.texto || chunk.chunk || "";
+        const vector = await generarEmbedding(textoAProcesar);
         
-        // Si no hay vector nos saldrá un error
+        // Si no hay vector, saltamos este chunk pero no rompemos el proceso
         if (!vector) {
-        console.error("\n❌ Embedding NULL. Abortando.");
-        // Considerar process.exit(1) para detener la ejecución aquí si es un fallo crítico.
+            console.error(`\n❌ Embedding NULL en chunk ID ${chunk.id}. Saltando...`);
+            continue;
         }
 
-        // Si hay vector, lo introduciremos en nuestro array resultado
+        // --- CORRECCIÓN IMPORTANTE ---
+        // Guardamos todo el objeto chunk original (id, contenido, fuente, pagina)
+        // y le añadimos el campo embedding.
         resultados.push({
-            id: chunk.id,
+            ...chunk, 
             embedding: vector
         });
 
         // Capturar la dimensión solo una vez
-        if (i === 0 && vector) {
+        if (dimension === 0 && vector.length > 0) {
             dimension = vector.length;
         }
     }
@@ -126,7 +144,5 @@ async function procesarTodos(){
     console.log(`📏 Dimensión de cada embedding: ${dimension}`);
 }
 
-// Para ejecutar directamente el script:
-if (import.meta.url === `file://${process.argv[1]}`) {
-    procesarTodos();
-}
+// Ejecutamos la función principal directamente
+procesarTodos();
