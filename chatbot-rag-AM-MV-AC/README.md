@@ -30,21 +30,21 @@ Aplicación full-stack que implementa un sistema RAG (Retrieval Augmented Genera
 ```
 chatbot-rag-AM-MV-AC/
 ├── backend/
-│   └── datos/
-│       ├── .gitkeep
-│       ├── chunks.json          # Fragmentos procesados
-│       ├── embeddings.json      # Fragmentos con vectores
-│       ├── rof_vectores.db      # Base de datos SQLite
-│       └── rof.txt              # ROF original (entrada)
-├── scripts/
-│   ├── cargar_bd.js             # Fase 3: Carga a base de datos
-│   ├── generar_embeddings.js    # Fase 2: Generación de vectores
-│   ├── procesar_rof.js          # Fase 1: División en fragmentos
-│   └── test_busqueda.js         # Fase 4: Pruebas de búsqueda
-├── tests/
-│   ├── generar_embedding.test.js 
-│   ├── procesar_rof.test.js
-│   └── test_busqueda.test.js
+│   ├── datos/
+│   │   ├── .gitkeep
+│   │   ├── chunks.json          # Fragmentos procesados
+│   │   ├── embeddings.json      # Fragmentos con vectores
+│   │   ├── rof_vectores.db      # Base de datos SQLite
+│   │   └── rof.txt              # ROF original (entrada)
+│   ├── scripts/
+│   │   ├── cargar_bd.js             # Fase 3: Carga a base de datos
+│   │   ├── generar_embeddings.js    # Fase 2: Generación de vectores
+│   │   ├── procesar_rof.js          # Fase 1: División en fragmentos
+│   │   └── test_busqueda.js         # Fase 4: Pruebas de búsqueda
+│   ├── tests/
+│   │   ├── generar_embedding.test.js 
+│   │   ├── procesar_rof.test.js
+│       └── test_busqueda.test.js
 ├── docs/
 │   ├── checklist.md 
 ├── frontend/
@@ -318,20 +318,22 @@ docker compose down
 
 ## 📸 Capturas de Pantalla
 
-(Añadir capturas cuando esté el frontend completo)
+![Vista previa de la App](./public/img/AppUI.png)
+![Vista previa de la App con respuesta](./public/img/AppConResupuesta.png)
 
 ## 🤝 Trabajo en Equipo
 
 Este proyecto fue desarrollado en grupo:
+Se pueden comprobar las tareas de cada uno en el cheklist
 
 
 ## 👨‍💻 Autores
 
 **[Nombres de los estudiantes]**
-- GitHub: [@usuario1](https://github.com/usuario1)
-- GitHub: [@usuario2](https://github.com/usuario2)
-- GitHub: [@usuario3](https://github.com/usuario3)
-- GitHub: [@usuario4](https://github.com/usuario4)
+- GitHub: [@MarioValiente-Giraldo](https://github.com/MarioValiente-Giraldo)
+- GitHub: [@Amolnav](https://github.com/Amolnav)
+- GitHub: [@Adamcum](https://github.com/Adamcum)
+- GitHub: [@claudiasolera](https://github.com/claudiasolera)
 
 
 ## 📝 Licencia

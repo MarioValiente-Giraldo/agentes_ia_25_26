@@ -59,12 +59,12 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | 2.2.5 | Mostrar estadísticas (progreso, tiempo, dimensión) | [x] | Mario | |
 | 2.2.6 | Probar ejecución: `npm run embeddings` | [x] | Mario | |
 | **2.3** | **💾 `scripts/cargar_bd.js`** | `cargar_bd.js` | |  | |
-| 2.3.1 | Implementar `inicializarBD()`: Crear `datos/rof_vectores.db` | ☐ | Ale | |
-| 2.3.2 | Crear tabla `fragmentos` con campos correctos | ☐ | Ale | |
-| 2.3.3 | Implementar `insertarFragmentos()`: Leer `datos/embeddings.json` | ☐ | Ale | |
-| 2.3.4 | Usar transacciones (`BEGIN`, `COMMIT`) para la inserción | ☐ | Ale | |
-| 2.3.5 | Implementar `verificarBD()` (contar fragmentos) | ☐ | Ale | |
-| 2.3.6 | Probar ejecución: `npm run cargar-bd` | ☐ | Ale | |
+| 2.3.1 | Implementar `inicializarBD()`: Crear `datos/rof_vectores.db` | [x] | Alex | |
+| 2.3.2 | Crear tabla `fragmentos` con campos correctos | [x] | Alex | |
+| 2.3.3 | Implementar `insertarFragmentos()`: Leer `datos/embeddings.json` | [x] | Alex | |
+| 2.3.4 | Usar transacciones (`BEGIN`, `COMMIT`) para la inserción | [x] | Alex | |
+| 2.3.5 | Implementar `verificarBD()` (contar fragmentos) | [x] | Alex | |
+| 2.3.6 | Probar ejecución: `npm run cargar-bd` | [x] | Alex | |
 | **2.4** | **🔍 `scripts/test_busqueda.js`** | `test_busqueda.js` | |  | |
 | 2.4.1 | Implementar `calcularSimilitud(v1, v2)` (Coseno) | [x] | Claudia | |
 | 2.4.2 | Implementar `buscarFragmentosSimilares(consulta, limite=3)` | [x] | Claudia | |
@@ -80,11 +80,11 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | # | Tarea | Estado | Asignado a | Observaciones |
 | :--- | :--- | :--- | :--- | :--- |
 | 3.1 | **🐳 Docker Compose para Ollama** | |  | |
-| 3.1.1 | Crear archivo `docker-compose.yml` | ☐ | | |
-| 3.1.2 | Levantar contenedor: `docker compose up -d` | ☐ | | |
-| 3.1.3 | Verificar: `curl http://localhost:11434/api/tags` | ☐ | | |
-| 3.1.4 | Descargar modelo de embeddings: `docker exec ollama_rag ollama pull nomic-embed-text` | ☐ | | |
-| 3.1.5 | Descargar modelo LLM: `docker exec ollama_rag ollama pull mistral` | ☐ | | |
+| 3.1.1 | Crear archivo `docker-compose.yml` | [x] | | |
+| 3.1.2 | Levantar contenedor: `docker compose up -d` | [x] | | |
+| 3.1.3 | Verificar: `curl http://localhost:11434/api/tags` | [x] | | |
+| 3.1.4 | Descargar modelo de embeddings: `docker exec ollama_rag ollama pull nomic-embed-text` | [x] | | |
+| 3.1.5 | Descargar modelo LLM: `docker exec ollama_rag ollama pull mistral` | [x] | | |
 
 ---
 
@@ -99,7 +99,7 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | 4.1.4 | Ejecución completa (`npm run ingesta`) | [x] | Claudia | |
 | 4.1.5 | Scripts individuales | [x] | Claudia | |
 | 4.1.6 | Estructura de datos (archivos y tabla `fragmentos`) | [x] | Claudia | |
-| 4.1.7 | Explicación: ¿Qué es un embedding? | ☐ | | |
+| 4.1.7 | Explicación: ¿Qué es un embedding? | [x] | | |
 | 4.1.8 | Decisiones de diseño (SQLite3, nomic-embed-text, tamaño mínimo) | [x] | Claudia | |
 | 4.1.9 | Próximas Fases (backend, frontend) | [x] | Claudia | |
 
@@ -110,10 +110,10 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 | # | Tarea | Archivo | Estado | Asignado a | Observaciones |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | 5.1 | **🧪 `validacion.http`** | `validacion.http` | |  | |
-| 5.1.1 | Crear archivo `validacion.http` | ☐ | Mario | |
-| 5.1.2 | Añadir test de Ollama: `GET http://localhost:11434/api/tags` | ☐ | Mario | |
-| 5.1.3 | Añadir verificación de generación de embeddings | ☐ | Mario | |
-| 5.1.4 | Añadir verificación de BD creada | ☐ | Mario | |
+| 5.1.1 | Crear archivo `validacion.http` | [x] | Mario | |
+| 5.1.2 | Añadir test de Ollama: `GET http://localhost:11434/api/tags` | [x] | Mario | |
+| 5.1.3 | Añadir verificación de generación de embeddings | [x] | Mario | |
+| 5.1.4 | Añadir verificación de BD creada | [x] | Mario | |
 
 ---
 
@@ -121,9 +121,9 @@ Este documento sirve como lista de verificación y seguimiento para el desarroll
 
 | # | Tarea | Estado | Asignado a | Observaciones |
 | :--- | :--- | :--- | :--- | :--- |
-| 6.1 | Hacer commit inicial (`git commit -m "feat: Inicialización del proyecto y estructura básica"`) | ☐ | | |
-| 6.2 | Commit tras cada script completado (`procesar`, `embeddings`, `cargar-bd`) | ☐ | | |
-| 6.3 | Push a repositorio remoto | ☐ | | |
-| 6.4 | Crear Pull Request (si aplica) | ☐ | | |
+| 6.1 | Hacer commit inicial (`git commit -m "feat: Inicialización del proyecto y estructura básica"`) | [x] | | |
+| 6.2 | Commit tras cada script completado (`procesar`, `embeddings`, `cargar-bd`) | [x] | | |
+| 6.3 | Push a repositorio remoto | [x] | | |
+| 6.4 | Crear Pull Request (si aplica) | [x] | | |
 
 ---
