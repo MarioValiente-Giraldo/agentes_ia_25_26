@@ -16,8 +16,7 @@ const OUTPUT_PATH = process.env.OUTPUT_PATH;
  */
 async function comprobarConexionOllama(){
     try{
-        // CORRECCIÓN: Usamos /api/embeddings en lugar de /api/generate
-        // porque 'nomic-embed-text' NO es un modelo generativo.
+        
         const response = await fetch(`${OLLAMA_URL}/api/embeddings`,{
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -118,7 +117,6 @@ async function procesarTodos(){
             continue;
         }
 
-        // --- CORRECCIÓN IMPORTANTE ---
         // Guardamos todo el objeto chunk original (id, contenido, fuente, pagina)
         // y le añadimos el campo embedding.
         resultados.push({
@@ -132,7 +130,7 @@ async function procesarTodos(){
         }
     }
 
-    // Guardar solo una vez después de todo el procesamiento (eficiente)
+    // Guardar solo una vez después de todo el procesamiento 
     fs.writeFileSync(OUTPUT_PATH, JSON.stringify(resultados, null, 2));
 
     const duracion = ((Date.now() - inicio) / 1000).toFixed(2);

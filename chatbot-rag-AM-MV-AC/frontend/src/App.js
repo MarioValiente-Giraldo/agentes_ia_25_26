@@ -117,13 +117,12 @@ export function App() {
   // 4. Área de mensajes (MODIFICADO: Ajuste de scroll y layout)
   // ---------------------------------------------------------
   const messagesWrapper = document.createElement('div');
-  // Cambiado 'flex justify-center' por 'flex flex-col items-center' para evitar bugs de scroll
+  
   messagesWrapper.className = 'flex-1 overflow-y-auto p-6 flex flex-col items-center scroll-smooth';
   messagesWrapper.style.backgroundImage = 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)';
 
   const messages = document.createElement('div');
-  messages.className = 'w-full max-w-4xl flex flex-col gap-6'; // Aumenté el gap a 6 para mejor separación
-
+  messages.className = 'w-full max-w-4xl flex flex-col gap-6'; 
   messagesWrapper.appendChild(messages);
 
   // ---------------------------------------------------------
@@ -205,10 +204,6 @@ export function App() {
     const msg = document.createElement('div');
     msg.textContent = text;
     
-    // MEJORAS DE ESTILO APLICADAS AQUÍ:
-    // 1. whitespace-pre-wrap: Respeta los saltos de línea de la IA.
-    // 2. leading-relaxed: Aumenta el interlineado para leer mejor.
-    // 3. shadow-md: Sombra un poco más suave.
     if (sender === 'user') {
       msg.className = 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white px-6 py-3.5 rounded-2xl rounded-tr-sm shadow-md break-words whitespace-pre-wrap leading-relaxed text-sm md:text-base';
     } else {
@@ -236,7 +231,6 @@ export function App() {
 
         const similitudBadge = document.createElement('span');
         const similitudNum = parseFloat(frag.similitud);
-        // Tu lógica de colores original
         const colorClass = similitudNum > 0.7 ? 'bg-green-500/20 text-green-400 border border-green-500/20' : 
                            similitudNum > 0.5 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/20' : 
                            'bg-orange-500/20 text-orange-400 border border-orange-500/20';
@@ -267,7 +261,6 @@ export function App() {
     wrapper.appendChild(msgGroup);
     messages.appendChild(wrapper);
 
-    // Auto-scroll mejorado
     setTimeout(() => {
         messagesWrapper.scrollTo({
             top: messagesWrapper.scrollHeight,
@@ -332,7 +325,7 @@ export function App() {
   }
 
   // ---------------------------------------------------------
-  // 9. Submit del chat (TU CÓDIGO ORIGINAL CON PEQUEÑO AJUSTE UI)
+  // 9. Submit del chat 
   // ---------------------------------------------------------
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -368,7 +361,6 @@ export function App() {
     setTimeout(() => addMessage('¡Hola! Soy tu asistente especializado en el ROF del centro. Puedo responder preguntas sobre:\n\n📋 Reglamentos y normas\n⏰ Horarios\n👔 Uniformes\n📚 Procedimientos\n\n¿Qué te gustaría saber?', 'bot'), 100);
   });
 
-  // Estilo para la animación fade-in por si no está en tu tailwind config
   const style = document.createElement('style');
   style.textContent = `
     @keyframes fadeIn {
