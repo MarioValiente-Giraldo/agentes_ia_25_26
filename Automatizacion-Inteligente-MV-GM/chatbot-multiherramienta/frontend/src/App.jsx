@@ -2,62 +2,102 @@ import { useState, useRef, useEffect } from 'react'
 
 const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/chat'
 
+const BG_PAGE    = '#f7f0f0'
+const BG_HEADER  = '#efe6e6'
+const BG_AREA    = '#f7f0f0'
+const BG_RECV    = '#e8d8d8'
+const BG_INPUT   = '#efe6e6'
+const CLR_SENT   = '#8b3a3a'   // burdeo suave para mensajes enviados
+const CLR_ACCENT = '#8b3a3a'   // burdeo para iconos activos
+const CLR_BORDER = '#d4b8b8'
+
+function formatTime(ts) {
+  return new Date(ts).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+}
+
 function TypingIndicator() {
   return (
-    <div className="flex items-end gap-2 mb-4">
-      <div className="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-sm flex-shrink-0">
-        🤖
-      </div>
-      <div className="bg-slate-700 border border-slate-600 rounded-2xl rounded-bl-sm px-4 py-3">
-        <div className="flex gap-1 items-center h-5">
-          <span className="w-2 h-2 bg-teal-400 rounded-full animate-bounce [animation-delay:0ms]" />
-          <span className="w-2 h-2 bg-teal-400 rounded-full animate-bounce [animation-delay:150ms]" />
-          <span className="w-2 h-2 bg-teal-400 rounded-full animate-bounce [animation-delay:300ms]" />
-        </div>
-      </div>
+    <div style={{ color: '#8b3a3a', display: 'flex', alignItems: 'center', gap: 4, marginLeft: 4 }}>
+      <span className="material-symbols-outlined" style={{ fontSize: 18, animation: 'pulse 1.5s infinite' }}>more_horiz</span>
+      <span style={{ fontSize: 12, fontStyle: 'italic', color: '#a07070' }}>Escribiendo...</span>
     </div>
   )
 }
 
-function Message({ msg }) {
-  const isUser = msg.role === 'user'
+function ReceivedBubble({ msg }) {
   return (
-    <div className={`flex items-end gap-2 mb-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-      <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0 ${
-          isUser ? 'bg-purple-700' : 'bg-teal-700'
-        }`}
-      >
-        {isUser ? '👤' : '🤖'}
-      </div>
-      <div
-        className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words ${
-          isUser
-            ? 'bg-purple-700 border border-purple-600 text-purple-50 rounded-br-sm'
-            : 'bg-slate-700 border border-slate-600 text-slate-100 rounded-bl-sm'
-        }`}
-      >
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '75%', gap: 4 }}>
+      <div style={{
+        background: BG_RECV,
+        border: `1px solid ${CLR_BORDER}`,
+        color: '#3d1515',
+        padding: '10px 16px',
+        borderRadius: '1rem',
+        borderBottomLeftRadius: '0.25rem',
+        fontSize: 14,
+        lineHeight: 1.5,
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word',
+      }}>
         {msg.content}
       </div>
+      <span style={{ fontSize: 10, color: '#a07070', marginLeft: 4 }}>{formatTime(msg.ts)}</span>
     </div>
   )
 }
 
-function WelcomeBubble() {
+function SentBubble({ msg }) {
   return (
-    <div className="flex items-end gap-2 mb-4">
-      <div className="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-sm flex-shrink-0">
-        🤖
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', alignSelf: 'flex-end', maxWidth: '75%', gap: 4 }}>
+      <div style={{
+        background: CLR_SENT,
+        color: '#fdf0f0',
+        padding: '10px 16px',
+        borderRadius: '1rem',
+        borderBottomRightRadius: '0.25rem',
+        fontSize: 14,
+        lineHeight: 1.5,
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word',
+      }}>
+        {msg.content}
       </div>
-      <div className="bg-slate-700 border border-slate-600 text-slate-100 rounded-2xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed max-w-[75%]">
-        <p className="font-medium text-teal-300 mb-1">Hola! Soy tu Chatbot Multiherramienta.</p>
-        <p className="text-slate-300">Puedo ayudarte con:</p>
-        <ul className="mt-1 space-y-0.5 text-slate-400 list-none">
-          <li>🌤️ <span className="text-slate-300">Clima</span> — pregunta por el tiempo en cualquier ciudad</li>
-          <li>🌍 <span className="text-slate-300">Países</span> — datos de cualquier país del mundo</li>
-          <li>📖 <span className="text-slate-300">Wikipedia</span> — busca personas, eventos, conceptos</li>
-          <li>💬 <span className="text-slate-300">General</span> — conversación libre</li>
-        </ul>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 4 }}>
+        <span style={{ fontSize: 10, color: '#c4a4a4' }}>{formatTime(msg.ts)}</span>
+        <span className="material-symbols-outlined" style={{ fontSize: 12, color: '#c4a4a4' }}>done_all</span>
+      </div>
+    </div>
+  )
+}
+
+function WelcomeCard() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '32px 16px',
+      borderBottom: `1px solid ${CLR_BORDER}`,
+      marginBottom: 24,
+    }}>
+      <div style={{
+        width: 64, height: 64, borderRadius: '50%',
+        background: 'linear-gradient(135deg, #7f1d1d, #be4040)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 28, marginBottom: 12,
+        boxShadow: '0 4px 16px rgba(139,58,58,0.2)',
+      }}>🤖</div>
+      <span style={{ fontWeight: 700, fontSize: 16, color: '#3d1515' }}>Chatbot Multiherramienta</span>
+      <p style={{ color: '#8b5555', fontSize: 13, marginTop: 8, maxWidth: 280, textAlign: 'center', lineHeight: 1.5 }}>
+        Pregúntame sobre el clima, países, Wikipedia o cualquier cosa.
+      </p>
+      <div style={{ display: 'flex', gap: 16, marginTop: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+        {[['🌤️','Clima'],['🌍','Países'],['📖','Wikipedia'],['💬','General']].map(([icon, label]) => (
+          <span key={label} style={{
+            background: '#f0e4e4', border: `1px solid ${CLR_BORDER}`,
+            color: '#8b3a3a', borderRadius: 999, padding: '4px 12px', fontSize: 12,
+          }}>{icon} {label}</span>
+        ))}
       </div>
     </div>
   )
@@ -70,6 +110,7 @@ export default function App() {
   const [sessionId] = useState(() => crypto.randomUUID())
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
+  const textareaRef = useRef(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -79,9 +120,10 @@ export default function App() {
     const text = input.trim()
     if (!text || loading) return
 
-    const userMsg = { role: 'user', content: text, id: Date.now() }
+    const userMsg = { role: 'user', content: text, id: Date.now(), ts: Date.now() }
     setMessages(prev => [...prev, userMsg])
     setInput('')
+    if (textareaRef.current) textareaRef.current.style.height = 'auto'
     setLoading(true)
 
     try {
@@ -90,29 +132,19 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, sessionId }),
       })
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`)
-      }
-
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       const botText =
-        data?.output ||
-        data?.message ||
-        data?.text ||
-        data?.response ||
+        data?.output || data?.message || data?.text || data?.response ||
         (Array.isArray(data) && (data[0]?.output || data[0]?.message || data[0]?.text)) ||
         'Lo siento, no pude obtener una respuesta.'
-
-      const botMsg = { role: 'bot', content: botText, id: Date.now() + 1 }
-      setMessages(prev => [...prev, botMsg])
+      setMessages(prev => [...prev, { role: 'bot', content: botText, id: Date.now() + 1, ts: Date.now() + 1 }])
     } catch (err) {
-      const errMsg = {
+      setMessages(prev => [...prev, {
         role: 'bot',
-        content: `Error al conectar con el servidor: ${err.message}. Asegúrate de que N8N esté en ejecución.`,
-        id: Date.now() + 1,
-      }
-      setMessages(prev => [...prev, errMsg])
+        content: `Error al conectar: ${err.message}. Asegúrate de que N8N esté activo.`,
+        id: Date.now() + 1, ts: Date.now() + 1,
+      }])
     } finally {
       setLoading(false)
       inputRef.current?.focus()
@@ -126,70 +158,145 @@ export default function App() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-zinc-950 text-slate-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-2xl flex flex-col h-[90vh] max-h-[800px]">
+  const handleInput = (e) => {
+    setInput(e.target.value)
+    e.target.style.height = 'auto'
+    e.target.style.height = Math.min(e.target.scrollHeight, 128) + 'px'
+  }
 
-        {/* Header */}
-        <div className="bg-slate-800 border border-slate-700 rounded-t-2xl px-6 py-4 flex items-center gap-3 flex-shrink-0">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-teal-600 flex items-center justify-center text-lg">
-            🤖
-          </div>
+  const canSend = input.trim() && !loading
+
+  return (
+    <div style={{ height: '100vh', background: BG_PAGE, display: 'flex', flexDirection: 'column', fontFamily: "'Be Vietnam Pro', sans-serif" }}>
+
+      {/* Header */}
+      <div style={{
+        background: BG_HEADER + 'cc',
+        backdropFilter: 'blur(12px)',
+        borderBottom: `1px solid ${CLR_BORDER}`,
+        padding: '12px 20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexShrink: 0,
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: '50%',
+            background: 'linear-gradient(135deg, #7f1d1d, #be4040)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
+          }}>🤖</div>
           <div>
-            <h1 className="text-lg font-bold text-slate-100 leading-tight">Chatbot Multiherramienta</h1>
-            <p className="text-xs text-slate-400">Clima · Países · Wikipedia</p>
-          </div>
-          <div className="ml-auto flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-slate-400">Conectado</span>
+            <div style={{ fontWeight: 700, fontSize: 15, color: '#f5e6e6', lineHeight: 1.2 }}>Chatbot Multiherramienta</div>
+            <div style={{ fontSize: 12, color: '#7a4040' }}>Clima · Países · Wikipedia</div>
           </div>
         </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#be4040', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+          <span style={{ fontSize: 12, color: '#7a4040' }}>Conectado</span>
+        </div>
+      </div>
 
-        {/* Messages area */}
-        <div className="flex-1 overflow-y-auto bg-slate-900 border-x border-slate-700 px-4 py-4 scroll-smooth">
-          <WelcomeBubble />
-          {messages.map(msg => (
-            <Message key={msg.id} msg={msg} />
-          ))}
+      {/* Messages */}
+      <div
+        className="custom-scrollbar"
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '0 20px',
+          background: BG_AREA,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div style={{ maxWidth: 720, width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 16 }}>
+          <WelcomeCard />
+          {messages.map(msg =>
+            msg.role === 'user'
+              ? <SentBubble key={msg.id} msg={msg} />
+              : <ReceivedBubble key={msg.id} msg={msg} />
+          )}
           {loading && <TypingIndicator />}
           <div ref={bottomRef} />
         </div>
+      </div>
 
-        {/* Input area */}
-        <div className="bg-slate-800 border border-slate-700 rounded-b-2xl px-4 py-3 flex-shrink-0">
-          <div className="flex items-end gap-2">
+      {/* Input */}
+      <div style={{
+        background: BG_INPUT,
+        borderTop: `1px solid ${CLR_BORDER}`,
+        padding: '12px 20px',
+        flexShrink: 0,
+      }}>
+        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: 8,
+            background: BG_RECV,
+            border: `1px solid ${CLR_BORDER}`,
+            borderRadius: '1rem',
+            padding: '8px 8px 8px 12px',
+            transition: 'border-color 0.2s',
+          }}
+            onFocus={e => e.currentTarget.style.borderColor = CLR_ACCENT}
+            onBlur={e => e.currentTarget.style.borderColor = CLR_BORDER}
+          >
             <textarea
-              ref={inputRef}
+              ref={el => { inputRef.current = el; textareaRef.current = el }}
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={handleInput}
               onKeyDown={handleKeyDown}
               disabled={loading}
               rows={1}
-              placeholder="Pregunta por el clima, un país o cualquier tema..."
-              className="flex-1 bg-slate-700 border border-slate-600 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm resize-none focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors disabled:opacity-50 min-h-[42px] max-h-32"
-              style={{ height: 'auto' }}
-              onInput={e => {
-                e.target.style.height = 'auto'
-                e.target.style.height = Math.min(e.target.scrollHeight, 128) + 'px'
+              placeholder="Escribe un mensaje..."
+              style={{
+                flex: 1,
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: '#f5e6e6',
+                fontSize: 14,
+                fontFamily: "'Be Vietnam Pro', sans-serif",
+                resize: 'none',
+                padding: '6px 4px',
+                minHeight: 36,
+                maxHeight: 128,
+                overflowY: 'auto',
               }}
+              className="custom-scrollbar"
             />
             <button
               onClick={sendMessage}
-              disabled={!input.trim() || loading}
-              className="bg-purple-600 hover:bg-purple-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-xl px-4 py-2.5 text-sm font-medium transition-colors flex-shrink-0 flex items-center gap-1.5 h-[42px]"
+              disabled={!canSend}
+              style={{
+                padding: 8,
+                borderRadius: '50%',
+                border: 'none',
+                background: 'transparent',
+                cursor: canSend ? 'pointer' : 'not-allowed',
+                color: canSend ? CLR_ACCENT : '#4a2020',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'color 0.2s, background 0.2s',
+                flexShrink: 0,
+              }}
+              onMouseEnter={e => { if (canSend) e.currentTarget.style.background = '#3d1a1a' }}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                <path d="M3.105 2.288a.75.75 0 0 0-.826.95l1.414 4.926A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95 28.897 28.897 0 0 0 15.293-7.154.75.75 0 0 0 0-1.115A28.897 28.897 0 0 0 3.105 2.288Z" />
-              </svg>
-              Enviar
+              <span className="material-symbols-outlined" style={{ fontSize: 24 }}>send</span>
             </button>
           </div>
-          <p className="text-xs text-slate-600 mt-2 text-center">
+          <p style={{ textAlign: 'center', fontSize: 11, color: '#4a2020', marginTop: 6 }}>
             Enter para enviar · Shift+Enter para nueva línea
           </p>
         </div>
-
       </div>
+
     </div>
   )
 }
