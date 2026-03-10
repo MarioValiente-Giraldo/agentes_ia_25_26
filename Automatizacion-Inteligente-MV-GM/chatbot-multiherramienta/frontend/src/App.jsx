@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/chatbot'
 
@@ -108,12 +108,9 @@ export default function App() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [sessionId] = useState(() => crypto.randomUUID())
-  const bottomRef = useRef(null)
-  const inputRef = useRef(null)
-  const textareaRef = useRef(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById('chat-bottom')?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
 
   const sendMessage = async () => {
@@ -123,7 +120,7 @@ export default function App() {
     const userMsg = { role: 'user', content: text, id: Date.now(), ts: Date.now() }
     setMessages(prev => [...prev, userMsg])
     setInput('')
-    if (textareaRef.current) textareaRef.current.style.height = 'auto'
+    document.getElementById('chat-input').style.height = 'auto'
     setLoading(true)
 
     try {
@@ -147,7 +144,7 @@ export default function App() {
       }])
     } finally {
       setLoading(false)
-      inputRef.current?.focus()
+      document.getElementById('chat-input')?.focus()
     }
   }
 
@@ -220,7 +217,7 @@ export default function App() {
               : <ReceivedBubble key={msg.id} msg={msg} />
           )}
           {loading && <TypingIndicator />}
-          <div ref={bottomRef} />
+          <div id="chat-bottom" />
         </div>
       </div>
 
@@ -246,7 +243,7 @@ export default function App() {
             onBlur={e => e.currentTarget.style.borderColor = CLR_BORDER}
           >
             <textarea
-              ref={el => { inputRef.current = el; textareaRef.current = el }}
+              id="chat-input"
               value={input}
               onChange={handleInput}
               onKeyDown={handleKeyDown}
