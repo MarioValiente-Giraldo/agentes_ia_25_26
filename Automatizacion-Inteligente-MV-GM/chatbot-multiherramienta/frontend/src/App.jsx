@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/chat'
+const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/chatbot'
 
 const BG_PAGE    = '#f7f0f0'
 const BG_HEADER  = '#efe6e6'
