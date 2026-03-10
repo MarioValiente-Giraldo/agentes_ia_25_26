@@ -73,7 +73,7 @@ services:
     depends_on:
       - n8n
     environment:
-      VITE_N8N_WEBHOOK_URL: http://localhost:5678/webhook/chatbot
+      VITE_N8N_WEBHOOK_URL: /webhook/chatbot
 
 volumes:
   postgres_data:

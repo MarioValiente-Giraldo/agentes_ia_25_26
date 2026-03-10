@@ -7,8 +7,8 @@ const BG_HEADER  = '#efe6e6'
 const BG_AREA    = '#f7f0f0'
 const BG_RECV    = '#e8d8d8'
 const BG_INPUT   = '#efe6e6'
-const CLR_SENT   = '#8b3a3a'   // burdeo suave para mensajes enviados
-const CLR_ACCENT = '#8b3a3a'   // burdeo para iconos activos
+const CLR_SENT   = '#8b3a3a'   
+const CLR_ACCENT = '#8b3a3a'   
 const CLR_BORDER = '#d4b8b8'
 
 function formatTime(ts) {
