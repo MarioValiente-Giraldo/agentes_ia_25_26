@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "backend/scripts/procesar_rof.js",
+  "type": "module",
+  "scripts": {
+  "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+  "test:backend": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js ./tests",
+  "test:embeddings": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js test/generar_embeddings.test.js",
+  "test:busqueda": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js ./tests/test_busqueda.test.js",
+  "procesar": "node ./scripts/procesar_rof.js",
+  "start": "node server.js",  
+  "cargar-bd": "node scripts/cargar_bd.js",
+  "test-busqueda": "node scripts/test_busqueda.js",
+  "embeddings": "node scripts/generar_embeddings.js",
+  "ingesta": "npm run procesar && npm run embeddings && npm run cargar-bd"
+},
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "transform": {}
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "ollama": "^0.6.3"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11"
+  }
+}
