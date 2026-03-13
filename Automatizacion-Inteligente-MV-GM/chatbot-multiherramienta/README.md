@@ -1,93 +1,93 @@
 # Chatbot Multiherramienta
 
-A full-stack chatbot that routes user queries to external APIs (weather, countries, Wikipedia) through N8N workflow automation, backed by Ollama for LLM intent analysis and PostgreSQL for conversation persistence.
+Un chatbot completo que enruta consultas de usuarios a APIs externas (clima, países, Wikipedia) a través de automatización de flujos de trabajo N8N, respaldado por Ollama para análisis de intención con LLM y PostgreSQL para persistencia de conversaciones.
 
-## Architecture
+## Arquitectura
 
 ```
-Browser (React 19)
+Navegador (React 19)
     │  POST /webhook/chat
     ▼
-N8N Workflow
-    ├── PostgreSQL  ← save user message
-    ├── Ollama      ← classify intent (WEATHER / COUNTRY / WIKI / GENERAL)
-    ├── Switch router
-    │     ├── WEATHER  → OpenMeteo geocoding + forecast API
-    │     ├── COUNTRY  → REST Countries API
-    │     ├── WIKI     → Wikipedia REST API
-    │     └── GENERAL  → Ollama free chat
-    ├── PostgreSQL  ← save bot response
-    └── Respond to Webhook → { "output": "..." }
+Flujo de Trabajo N8N
+    ├── PostgreSQL  ← guardar mensaje del usuario
+    ├── Ollama      ← clasificar intención (WEATHER / COUNTRY / WIKI / GENERAL)
+    ├── Enrutador de cambio
+    │     ├── WEATHER  → API de geocodificación + pronóstico de OpenMeteo
+    │     ├── COUNTRY  → API REST de Países
+    │     ├── WIKI     → API REST de Wikipedia
+    │     └── GENERAL  → chat libre de Ollama
+    ├── PostgreSQL  ← guardar respuesta del bot
+    └── Responder al Webhook → { "output": "..." }
 ```
 
-### Services
-| Service    | Image                 | Port  | Purpose                        |
-|------------|-----------------------|-------|--------------------------------|
-| postgres   | postgres:16-alpine    | 5432  | Conversation history           |
-| ollama     | ollama/ollama         | 11434 | LLM intent analysis & chat     |
-| n8n        | n8nio/n8n:latest      | 5678  | Workflow automation            |
-| frontend   | node:22-alpine (build)| 3000  | React chat UI                  |
+### Servicios
+| Servicio   | Imagen                | Puerto | Propósito                      |
+|------------|----------------------|--------|--------------------------------|
+| postgres   | postgres:16-alpine   | 5432   | Historial de conversaciones    |
+| ollama     | ollama/ollama        | 11434  | Análisis de intención LLM y chat|
+| n8n        | n8nio/n8n:latest     | 5678   | Automatización de flujos       |
+| frontend   | node:22-alpine (build)| 3000  | Interfaz de chat React         |
 
-### External APIs (no API keys needed)
-- **Weather**: [OpenMeteo](https://api.open-meteo.com) — geocoding + forecast
-- **Countries**: [REST Countries](https://restcountries.com/v3.1)
+### APIs Externas (sin necesidad de claves API)
+- **Clima**: [OpenMeteo](https://api.open-meteo.com) — geocodificación + pronóstico
+- **Países**: [REST Countries](https://restcountries.com/v3.1)
 - **Wikipedia**: [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1)
 
 ---
 
-## Quick Start
+## Inicio Rápido
 
-### 1. Start all services
+### 1. Inicia todos los servicios
 
 ```bash
 docker-compose up -d
 ```
 
-Wait ~30 seconds for all services to initialize.
+Espera ~30 segundos para que todos los servicios se inicialicen.
 
-### 2. Pull the Ollama model
+### 2. Descarga el modelo de Ollama
 
 ```bash
 docker exec chatbot-ollama ollama pull llama3.2
 ```
 
-This downloads ~2 GB. Wait until complete before using the chatbot.
+Esto descarga ~2 GB. Espera a que se complete antes de usar el chatbot.
 
-### 3. Import the N8N workflow
+### 3. Importa el flujo de trabajo de N8N
 
-1. Open N8N at **http://localhost:5678**
-2. Create an account on first run
-3. Go to **Workflows → Import from file**
-4. Select `n8n-workflow.json` from this project root
-5. Configure the PostgreSQL credential (see below)
-6. Activate the workflow
+1. Abre N8N en **http://localhost:5678**
+2. Crea una cuenta en la primera ejecución
+3. Ve a **Workflows → Import from file**
+4. Selecciona `n8n-workflow.json` desde la raíz del proyecto
+5. Configura la credencial de PostgreSQL (ver abajo)
+6. Activa el flujo de trabajo
 
-### 4. Configure PostgreSQL credentials in N8N
+### 4. Configura credenciales de PostgreSQL en N8N
 
-After importing the workflow:
+Después de importar el flujo de trabajo:
 
-1. Open the imported workflow
-2. Click any **PostgreSQL** node
-3. Click the **Credentials** field → **Create new**
-4. Fill in:
+1. Abre el flujo de trabajo importado
+2. Haz clic en cualquier nodo de **PostgreSQL**
+3. Haz clic en el campo **Credentials** → **Create new**
+4. Completa:
    - **Host**: `postgres`
    - **Database**: `chatbot`
    - **User**: `chatbot`
    - **Password**: `chatbot123`
    - **Port**: `5432`
-5. Save and apply to both PostgreSQL nodes in the workflow
-6. **Activate** the workflow with the toggle at the top
+5. Guarda y aplica a ambos nodos de PostgreSQL en el flujo de trabajo
+6. **Activa** el flujo de trabajo con el interruptor en la parte superior
 
-### 5. Open the frontend
+### 5. Abre el frontend
 
-Go to **http://localhost:3000**
+Ve a **http://localhost:3000**
 
 ---
 
-## Usage Examples
+## Ejemplos de Uso
 
-| Query | Intent | API Used |
-|-------|--------|----------|
+| Consulta | Intención | API Utilizada |
+|----------|-----------|---------------|
 | "¿Qué tiempo hace en Madrid?" | WEATHER | OpenMeteo |
 | "Cuéntame sobre Francia" | COUNTRY | REST Countries |
 | "¿Quién fue Einstein?" | WIKI | Wikipedia |
@@ -97,14 +97,14 @@ Go to **http://localhost:3000**
 
 ## Endpoints
 
-| Endpoint | Method | Description |
+| Endpoint | Método | Descripción |
 |----------|--------|-------------|
-| `http://localhost:3000` | GET | Frontend chat UI |
-| `http://localhost:5678` | GET | N8N dashboard |
-| `http://localhost:5678/webhook/chat` | POST | Chat webhook |
-| `http://localhost:11434` | GET | Ollama API |
+| `http://localhost:3000` | GET | Interfaz de chat frontend |
+| `http://localhost:5678` | GET | Panel de control N8N |
+| `http://localhost:5678/webhook/chat` | POST | Webhook de chat |
+| `http://localhost:11434` | GET | API de Ollama |
 
-### Webhook payload
+### Carga útil del webhook
 ```json
 {
   "message": "¿Qué tiempo hace en Barcelona?",
@@ -112,7 +112,7 @@ Go to **http://localhost:3000**
 }
 ```
 
-### Webhook response
+### Respuesta del webhook
 ```json
 {
   "output": "🌤️ Clima en Barcelona, Spain:\n\n🌡️ Temperatura actual: 18°C\n..."
@@ -121,9 +121,9 @@ Go to **http://localhost:3000**
 
 ---
 
-## Development
+## Desarrollo
 
-### Run frontend locally (outside Docker)
+### Ejecutar frontend localmente (fuera de Docker)
 
 ```bash
 cd frontend
@@ -131,25 +131,25 @@ npm install
 VITE_N8N_WEBHOOK_URL=http://localhost:5678/webhook/chat npm run dev
 ```
 
-### View conversation history (PostgreSQL)
+### Ver historial de conversaciones (PostgreSQL)
 
 ```bash
 docker exec -it chatbot-postgres psql -U chatbot -d chatbot -c "SELECT * FROM conversations ORDER BY created_at DESC LIMIT 20;"
 ```
 
-### Check Ollama models
+### Verificar modelos de Ollama
 
 ```bash
 docker exec chatbot-ollama ollama list
 ```
 
-### Stop all services
+### Detener todos los servicios
 
 ```bash
 docker-compose down
 ```
 
-### Stop and remove all data
+### Detener y eliminar todos los datos
 
 ```bash
 docker-compose down -v
@@ -157,12 +157,12 @@ docker-compose down -v
 
 ---
 
-## Project Structure
+## Estructura del Proyecto
 
 ```
 chatbot-multiherramienta/
-├── docker-compose.yml      # All services definition
-├── n8n-workflow.json       # N8N workflow (import into N8N UI)
+├── docker-compose.yml      # Definición de todos los servicios
+├── n8n-workflow.json       # Flujo de trabajo N8N (importar en UI de N8N)
 ├── README.md
 └── frontend/
     ├── Dockerfile
@@ -177,19 +177,19 @@ chatbot-multiherramienta/
 
 ---
 
-## Troubleshooting
+## Solución de Problemas
 
-**Frontend shows "Error al conectar"**
-- Make sure N8N is running and the workflow is **active**
-- Check that the PostgreSQL credentials are configured in N8N
+**El frontend muestra "Error al conectar"**
+- Asegúrate de que N8N está ejecutándose y el flujo de trabajo está **activo**
+- Verifica que las credenciales de PostgreSQL están configuradas en N8N
 
-**Ollama responses are slow**
-- LLM inference is CPU-intensive without a GPU. First responses can take 30-60 seconds
-- Subsequent responses are faster after the model is loaded in memory
+**Las respuestas de Ollama son lentas**
+- La inferencia del LLM es intensiva en CPU sin GPU. Las primeras respuestas pueden tardar 30-60 segundos
+- Las respuestas posteriores son más rápidas después de que el modelo se carga en memoria
 
-**N8N workflow not receiving requests**
-- Verify the workflow is **activated** (toggle in top right)
-- The webhook path must be exactly `chat` (URL: `/webhook/chat`)
+**El flujo de trabajo de N8N no recibe solicitudes**
+- Verifica que el flujo de trabajo está **activado** (interruptor en la esquina superior derecha)
+- La ruta del webhook debe ser exactamente `chat` (URL: `/webhook/chat`)
 
-**"model not found" error from Ollama**
-- Run `docker exec chatbot-ollama ollama pull llama3.2` and wait for completion
+**Error "model not found" de Ollama**
+- Ejecuta `docker exec chatbot-ollama ollama pull llama3.2` y espera a que se complete
