@@ -1,0 +1,325 @@
+{
+  "name": "API Chat Front",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatbot",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "98cb7065-9f9e-43a3-b84e-544654100ae7",
+      "name": "Webhook Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [512, 1104],
+      "webhookId": "ff384c32-dcb9-4d29-8127-1b5346225334"
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $input.first().json.body.message.toLowerCase();\n\nconst keywords = {\n  clima:     ['tiempo', 'clima', 'lluvia', 'temperatura', 'sol', 'viento', 'nieve', 'calor', 'frio', 'frío', 'meteorolog', 'pronóstico', 'pronostico', 'grados'],\n  pais:      ['país', 'pais', 'capital', 'población', 'poblacion', 'moneda', 'idioma', 'continente', 'nación', 'nacion', 'bandera'],\n  wikipedia: ['quién es', 'quien es', 'qué es', 'que es', 'cuéntame sobre', 'cuentame sobre', 'historia de', 'información sobre', 'informacion sobre', 'háblame de', 'hablame de']\n};\n\nconst found = Object.entries(keywords).find(([, words]) => words.some(w => msg.includes(w)));\nconst intencion = found ? found[0] : 'general';\n\nreturn [{ json: { body: $input.first().json.body, intencion } }];"
+      },
+      "id": "bb123456-1234-1234-1234-bb1234567890",
+      "name": "Detectar Intención",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [672, 1104]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "clima",
+                    "operator": { "type": "string", "operation": "equals" },
+                    "id": "12f76d45-ec97-4b30-bb92-c9b07c68837d"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
+                "conditions": [
+                  {
+                    "id": "cf9ac4a5-f6e5-4421-90ac-a24cf426adcf",
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "pais",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
+                "conditions": [
+                  {
+                    "id": "c2e61cc3-39ad-43f7-9cab-4050b1bf9eac",
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "wikipedia",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": { "fallbackOutput": "extra" }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [832, 1088],
+      "id": "d6da6c3b-335a-4246-b957-5b2b3f8a839f",
+      "name": "Switch Intención"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=37.1773&longitude=-3.5986&current_weather=true&timezone=Europe%2FMadrid",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1040, 928],
+      "id": "af891d29-2456-4354-b7c2-d494872a4d9c",
+      "name": "OpenMeteo API"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:1b', prompt: 'Del siguiente mensaje extrae SOLO el nombre del país mencionado. Responde ÚNICAMENTE con el nombre del país en español, sin puntuación ni explicación.\\nEjemplos:\\nMensaje: Qué idioma hablan en Brasil -> Brasil\\nMensaje: cuál es la capital de Japón -> Japón\\nMensaje: dime sobre Francia -> Francia\\nMensaje: ' + $('Webhook Chat').item.json.body.message, stream: false }) }}",
+        "options": {}
+      },
+      "id": "cc111111-1111-1111-1111-cc1111111111",
+      "name": "Extraer País",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1040, 1104]
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $('Webhook Chat').item.json.body.message;\n\nconst patrones = [\n  /(?:cuéntame|cuentame|háblame|hablame)\\s+(?:sobre|de)\\s+(.+)/i,\n  /(?:información|informacion)\\s+(?:sobre|de)\\s+(.+)/i,\n  /(?:historia de)\\s+(.+)/i,\n  /(?:quién es|quien es|qué es|que es)\\s+(.+)/i,\n  /(?:sobre|acerca de)\\s+(.+)/i,\n];\n\nlet entidad = msg;\nfor (const patron of patrones) {\n  const match = msg.match(patron);\n  if (match) { entidad = match[1].trim(); break; }\n}\n\nreturn [{ json: { entidad } }];"
+      },
+      "id": "dd222222-2222-2222-2222-dd2222222222",
+      "name": "Extraer Wikipedia",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1040, 1312]
+    },
+    {
+      "parameters": {
+        "url": "={{ 'https://restcountries.com/v3.1/name/' + encodeURIComponent($json.response.trim()) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1200, 1104],
+      "id": "27e0c80e-63f8-4d7d-b2c7-b0ca21280cf6",
+      "name": "REST Countries API"
+    },
+    {
+      "parameters": {
+        "url": "={{ 'https://es.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent($json.entidad) }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "ChatbotMultiherramienta/1.0 (contacto@ejemplo.com)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1200, 1312],
+      "id": "7d0cb1ea-7380-4ab9-b93c-0e91b853c9c5",
+      "name": "Wikipedia API",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:1b', prompt: 'Eres un asistente del tiempo. Usa SOLO estos datos reales de Granada: ' + JSON.stringify($json.current_weather || $json) + '\\nResponde en español de forma directa y breve. Si preguntan la temperatura, dila. Si preguntan la hora, dila. Pregunta del usuario: ' + $('Webhook Chat').item.json.body.message, stream: false }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1360, 928],
+      "id": "5da1b150-db14-4543-8937-aaffe83fcf37",
+      "name": "Ollama Responder Clima"
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = Array.isArray($input.first().json) ? $input.first().json[0] : $input.first().json;\n\nconst resumen = {\n  nombre: d.name?.common,\n  nombreOficial: d.name?.official,\n  capital: d.capital?.[0],\n  region: d.region,\n  subregion: d.subregion,\n  poblacion: d.population,\n  idiomas: d.languages ? Object.values(d.languages) : [],\n  moneda: d.currencies ? Object.values(d.currencies).map(c => c.name + ' (' + c.symbol + ')') : [],\n  bandera: d.flag,\n  area: d.area,\n  continente: d.continents?.[0],\n};\n\nreturn [{ json: resumen }];"
+      },
+      "id": "ee333333-3333-3333-3333-ee3333333333",
+      "name": "Filtrar Datos País",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 1104]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:1b', prompt: 'Con estos datos del país: ' + JSON.stringify($json) + '\\nResponde en español de forma breve y natural a: ' + $('Webhook Chat').item.json.body.message, stream: false }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1360, 1104],
+      "id": "13e4d6c7-ea5b-45c7-af62-566b55d76a9e",
+      "name": "Ollama Responder País"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:1b', prompt: ($json.extract || $json.description ? 'Con este extracto de Wikipedia: ' + JSON.stringify({ titulo: $json.title, resumen: $json.extract || $json.description }) + '\\n' : '') + 'Responde en español de forma breve y natural a: ' + $('Webhook Chat').item.json.body.message, stream: false }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1360, 1312],
+      "id": "c9751e70-58e1-4b15-88aa-d936dfeebf6b",
+      "name": "Ollama Responder Wikipedia"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:1b', prompt: 'Fecha y hora actual: ' + $now.toFormat('dd/MM/yyyy HH:mm') + '\\nResponde en español de forma breve y natural a: ' + $('Webhook Chat').item.json.body.message, stream: false }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1040, 1520],
+      "id": "dcc1259d-a1bd-4d67-99a8-5a15994f2b0a",
+      "name": "Ollama Responder General"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { output: $input.first().json.response } }];"
+      },
+      "id": "41536a3a-3945-4068-9430-559bd76f8c45",
+      "name": "Responder Front",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1600, 1104]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ (() => { const s = ($('Webhook Chat').item.json.body.sessionId || 'anon').toString().replace(/'/g, \"''\"); const u = ($('Webhook Chat').item.json.body.message || '').toString().replace(/'/g, \"''\"); const b = ($input.first().json.output || '').toString().replace(/'/g, \"''\"); return `INSERT INTO conversations (session_id, role, message) VALUES ('${s}', 'user', '${u}'); INSERT INTO conversations (session_id, role, message) VALUES ('${s}', 'bot', '${b}');`; })() }}",
+        "options": {}
+      },
+      "id": "pg111111-1111-1111-1111-pg1111111111",
+      "name": "Guardar Conversación",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1760, 1104],
+      "credentials": {
+        "postgres": {
+          "id": "K2t5o8SM7uDmyLyd",
+          "name": "chatbot-postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { output: $('Responder Front').first().json.output } }];"
+      },
+      "id": "pg222222-2222-2222-2222-pg2222222222",
+      "name": "Devolver Respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1920, 1104]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Chat": {
+      "main": [[{ "node": "Detectar Intención", "type": "main", "index": 0 }]]
+    },
+    "Detectar Intención": {
+      "main": [[{ "node": "Switch Intención", "type": "main", "index": 0 }]]
+    },
+    "Switch Intención": {
+      "main": [
+        [{ "node": "OpenMeteo API",           "type": "main", "index": 0 }],
+        [{ "node": "Extraer País",             "type": "main", "index": 0 }],
+        [{ "node": "Extraer Wikipedia",        "type": "main", "index": 0 }],
+        [{ "node": "Ollama Responder General", "type": "main", "index": 0 }]
+      ]
+    },
+    "OpenMeteo API": {
+      "main": [[{ "node": "Ollama Responder Clima", "type": "main", "index": 0 }]]
+    },
+    "Extraer País": {
+      "main": [[{ "node": "REST Countries API", "type": "main", "index": 0 }]]
+    },
+    "Extraer Wikipedia": {
+      "main": [[{ "node": "Wikipedia API", "type": "main", "index": 0 }]]
+    },
+    "REST Countries API": {
+      "main": [[{ "node": "Filtrar Datos País", "type": "main", "index": 0 }]]
+    },
+    "Filtrar Datos País": {
+      "main": [[{ "node": "Ollama Responder País", "type": "main", "index": 0 }]]
+    },
+    "Wikipedia API": {
+      "main": [[{ "node": "Ollama Responder Wikipedia", "type": "main", "index": 0 }]]
+    },
+    "Ollama Responder Clima": {
+      "main": [[{ "node": "Responder Front", "type": "main", "index": 0 }]]
+    },
+    "Ollama Responder País": {
+      "main": [[{ "node": "Responder Front", "type": "main", "index": 0 }]]
+    },
+    "Ollama Responder Wikipedia": {
+      "main": [[{ "node": "Responder Front", "type": "main", "index": 0 }]]
+    },
+    "Ollama Responder General": {
+      "main": [[{ "node": "Responder Front", "type": "main", "index": 0 }]]
+    },
+    "Responder Front": {
+      "main": [[{ "node": "Guardar Conversación", "type": "main", "index": 0 }]]
+    },
+    "Guardar Conversación": {
+      "main": [[{ "node": "Devolver Respuesta", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "7cbe98fb-87d7-457a-ae51-57f3000c90f1",
+  "meta": {
+    "instanceId": "c8e2534c5a6211aa77b61159ce7790686a9796e3a655794804cbce9afcb11e41"
+  },
+  "id": "j6ypd8GS480MxQGs",
+  "tags": []
+}
